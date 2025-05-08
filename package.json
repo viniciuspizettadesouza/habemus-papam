@@ -1,0 +1,13 @@
+{
+  "name": "habemus-papam",
+  "version": "1.0.0",
+  "description": "Returns information about the current pope of the Catholic Church.",
+  "main": "index.js",
+  "bin": {
+    "habemus-papam": "bin/cli.js"
+  },
+  "type": "module",
+  "keywords": ["pope", "vatican", "catholic", "church", "habemus papam", "leo xiv"],
+  "author": "Your Name",
+  "license": "MIT"
+}
