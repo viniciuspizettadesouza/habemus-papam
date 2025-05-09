@@ -8,6 +8,14 @@
   },
   "type": "module",
   "keywords": ["pope", "vatican", "catholic", "church", "habemus papam", "leo xiv"],
-  "author": "Your Name",
-  "license": "MIT"
+  "author": "Vinicius Souza",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viniciuspizettadesouza/habemus-papam.git"
+  },
+  "bugs": {
+    "url": "https://github.com/viniciuspizettadesouza/habemus-papam/issues"
+  },
+  "homepage": "https://github.com/viniciuspizettadesouza/habemus-papam#readme"
 }
