@@ -80,20 +80,23 @@ habemus-papam/
 │   │   ├── src/
 │   │   ├── bin/
 │   │   ├── package.json
-│   │   └── README.md (for npm site)
+│   │   └── README.md
 │   └── extension/    # Chrome Extension
 │       ├── popup.js/html
 │       ├── manifest.json
 │       └── assets
+├── .changeset/
+│   ├── config.json
+│   └── *.md
 ├── pnpm-workspace.yaml
-├── package.json (with zip-extension script)
+├── package.json (with publish/version scripts)
 ├── README.md (this file)
 └── privacy-policy.md
 ```
 
 ---
 
-## 🚀 Development
+## 🚀 Development & Versioning
 
 ### Requirements
 
@@ -110,30 +113,35 @@ pnpm install
 
 ```bash
 pnpm --filter habemus-papam start
-# or
-node packages/core/bin/cli.js
 ```
 
 ---
 
-## 🚀 Publishing
+## 🚀 Publishing with Changesets
 
-### Publish the NPM Package
-
-```bash
-cd packages/core
-pnpm publish --access public
-```
-
-Make sure you’re logged in with `npm login`.
-
-### Publish the Chrome Extension
+### Step 1: Create a changeset
 
 ```bash
-pnpm run zip-extension
+pnpm changeset
 ```
 
-Then go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and upload `habemus-papam-extension.zip`.
+Answer the prompts to choose the package and type of version bump (patch, minor, major).
+
+### Step 2: Apply versions
+
+```bash
+pnpm run version-packages
+```
+
+This updates `package.json` versions and generates a `CHANGELOG.md`.
+
+### Step 3: Publish updated packages
+
+```bash
+pnpm run release-packages
+```
+
+Only the packages with changesets will be published to npm.
 
 ---
 

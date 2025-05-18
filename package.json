@@ -7,7 +7,13 @@
     "publish-core": "pnpm --filter habemus-papam publish --access public",
     "bump-patch": "pnpm --filter habemus-papam version patch",
     "bump-minor": "pnpm --filter habemus-papam version minor",
-    "bump-major": "pnpm --filter habemus-papam version major"
+    "bump-major": "pnpm --filter habemus-papam version major",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release-packages": "changeset publish"
   },
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@changesets/cli": "^2.29.4"
+  }
 }
