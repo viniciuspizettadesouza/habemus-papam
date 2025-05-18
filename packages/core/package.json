@@ -1,6 +1,6 @@
 {
   "name": "habemus-papam",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Returns information about the current pope of the Catholic Church.",
   "main": "src/index.js",
   "bin": {

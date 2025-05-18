@@ -1,9 +1,19 @@
 # Habemus Papam
 
-✝️ Information about the current Pope — available via CLI, NPM package, and Chrome extension.
+A cross-platform JavaScript tool that provides information about the current Pope of the Catholic Church. It is available via CLI, npm package, and Chrome Extension.
 
-[![npm](https://img.shields.io/npm/v/habemus-papam?color=blue)](https://www.npmjs.com/package/habemus-papam)
-[![MIT License](https://img.shields.io/badge/license-MIT-green)](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/habemus-papam?color=blue)](https://www.npmjs.com/package/habemus-papam) [![MIT License](https://img.shields.io/badge/license-MIT-green)](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/license.md)
+
+---
+
+## ✝️ Overview
+
+This monorepo delivers papal information across multiple environments:
+
+- 📦 **NPM Package** – A reusable JavaScript library and CLI tool to access papal data programmatically.  
+  👉 **[View on npm](https://www.npmjs.com/package/habemus-papam)**
+- 🧩 **Chrome Extension** – A browser extension that displays current Pope information in real time.  
+  👉 **[Install via Chrome Web Store](https://chromewebstore.google.com/detail/habemus-papam/ccmjegfeapjehgfmdckmmllgpblojboi)**
 
 ---
 
@@ -21,17 +31,10 @@ npm install habemus-papam
 npx habemus-papam
 ```
 
-Output:
 ```
 Habemus Papam!
 Pope Leo XIV (Robert Francis Prevost) was elected on 2025-05-08.
 Today is the election day of the current pope!
-```
-
-### ▶️ Run CLI locally (monorepo)
-
-```bash
-pnpm run start:cli
 ```
 
 ---
@@ -42,29 +45,66 @@ pnpm run start:cli
 import { isElectionDayToday, getCurrentPope } from 'habemus-papam';
 
 console.log(getCurrentPope());
-// { name: "Pope Leo XIV", birthName: "Robert Francis Prevost", elected: "2025-05-08" }
 console.log(isElectionDayToday());
-// true if today is 2025-05-08
 ```
 
-## 🧩 Chrome Extension
+---
 
-See [`packages/extension/`](packages/extension/)
+## 🛠️ Developer Usage
 
-To load:
+### 🧩 Chrome Extension
+
+📁 See: [`packages/extension/`](packages/extension/)
+
+To load manually:
+
 1. Go to `chrome://extensions/`
 2. Enable Developer Mode
-3. Load `packages/extension/`
+3. Load the folder: `packages/extension/`
+
+To publish:
 
 ```bash
 pnpm run zip-extension
 ```
 
-This will create `habemus-papam-extension.zip` at the root.
+This creates `habemus-papam-extension.zip` at the root.
+
+### 🔃 Monorepo commands
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+#### ▶️ Run CLI locally (monorepo)
+
+```bash
+pnpm run start:cli
+```
+
+#### ✏️ Create a version bump:
+
+```bash
+pnpm changeset
+```
+
+#### 📄 Apply version and changelog:
+
+```bash
+pnpm run version-packages
+```
+
+#### 🚀 Publish to npm:
+
+```bash
+pnpm run release-packages
+```
 
 ---
 
-## 🛠️ Monorepo Structure
+## 🗂️ Monorepo Structure
 
 ```bash
 habemus-papam/
@@ -73,17 +113,7 @@ habemus-papam/
 │   └── extension/    # Chrome Extension
 ├── .changeset/       # Changeset files for versioning
 ├── pnpm-workspace.yaml
-└── package.json      # Root workspace config
-```
-
----
-
-## 🚀 Publishing Workflow
-
-```bash
-pnpm changeset              # create a version bump entry
-pnpm run version-packages   # apply the version
-pnpm run release-packages   # publish to npm
+└── package.json      # Root workspace config + scripts
 ```
 
 ---
@@ -97,4 +127,4 @@ Vinicius Souza
 
 ## 📄 License
 
-[MIT](./license.md)
+[MIT](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/license.md)
