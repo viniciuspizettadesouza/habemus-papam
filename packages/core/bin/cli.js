@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { isElectionDayToday, getCurrentPope } from '../index.js';
+import { isElectionDayToday, getCurrentPope } from '../src/index.js';
 
 const pope = getCurrentPope();
 

@@ -1,28 +1,13 @@
 {
   "name": "habemus-papam",
-  "version": "1.0.1",
-  "description": "Returns information about the current pope of the Catholic Church.",
-  "main": "index.js",
-  "bin": {
-    "habemus-papam": "bin/cli.js"
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "zip-extension": "cd packages/extension && zip -r ../../habemus-papam-extension.zip .",
+    "publish-core": "pnpm --filter habemus-papam publish --access public",
+    "bump-patch": "pnpm --filter habemus-papam version patch",
+    "bump-minor": "pnpm --filter habemus-papam version minor",
+    "bump-major": "pnpm --filter habemus-papam version major"
   },
-  "type": "module",
-  "keywords": [
-    "pope",
-    "vatican",
-    "catholic",
-    "church",
-    "habemus papam",
-    "leo xiv"
-  ],
-  "author": "Vinicius Souza",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/viniciuspizettadesouza/habemus-papam.git"
-  },
-  "bugs": {
-    "url": "https://github.com/viniciuspizettadesouza/habemus-papam/issues"
-  },
-  "homepage": "https://github.com/viniciuspizettadesouza/habemus-papam#readme"
+  "packageManager": "pnpm@10.11.0"
 }

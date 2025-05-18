@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+dist/
+pnpm-lock.yaml
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# VSCode
+.vscode/
+
+# Chrome extension build artifacts
+*.zip
+
+# TypeScript
+*.tsbuildinfo
+
+# OS or IDE
+.idea/
+*.swp
+
+# Optional cache
+.pnpm-store/
