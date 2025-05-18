@@ -10,7 +10,8 @@
     "bump-major": "pnpm --filter habemus-papam version major",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release-packages": "changeset publish"
+    "release-packages": "changeset publish",
+    "start:cli": "pnpm --filter habemus-papam start"
   },
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {

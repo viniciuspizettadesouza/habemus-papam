@@ -1,21 +1,13 @@
 # Habemus Papam
 
-> Information about the current Pope of the Catholic Church – available as an NPM package and a Chrome Extension.
+✝️ Information about the current Pope — available via CLI, NPM package, and Chrome extension.
+
+[![npm](https://img.shields.io/npm/v/habemus-papam?color=blue)](https://www.npmjs.com/package/habemus-papam)
+[![MIT License](https://img.shields.io/badge/license-MIT-green)](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/LICENSE)
 
 ---
 
-## ✝️ Overview
-
-This project contains two parts:
-
-- 📦 **NPM Package (`habemus-papam`)** – Provides data about the current Pope via CLI or programmatic usage.
-- 🧩 **Chrome Extension** – Displays Pope information directly in your browser.
-
----
-
-## 📦 NPM Package
-
-### Installation
+## 📦 Install
 
 ```bash
 pnpm add habemus-papam
@@ -23,19 +15,7 @@ pnpm add habemus-papam
 npm install habemus-papam
 ```
 
-### Usage as a library
-
-```js
-import { isElectionDayToday, getCurrentPope } from 'habemus-papam';
-
-console.log(getCurrentPope());
-// { name: "Pope Leo XIV", birthName: "Robert Francis Prevost", elected: "2025-05-08" }
-
-console.log(isElectionDayToday());
-// true if today is 2025-05-08
-```
-
-### CLI Usage
+## 🖥️ CLI Usage
 
 ```bash
 npx habemus-papam
@@ -48,110 +28,73 @@ Pope Leo XIV (Robert Francis Prevost) was elected on 2025-05-08.
 Today is the election day of the current pope!
 ```
 
+### ▶️ Run CLI locally (monorepo)
+
+```bash
+pnpm run start:cli
+```
+
 ---
+
+## 📚 Usage as a Library
+
+```js
+import { isElectionDayToday, getCurrentPope } from 'habemus-papam';
+
+console.log(getCurrentPope());
+// { name: "Pope Leo XIV", birthName: "Robert Francis Prevost", elected: "2025-05-08" }
+console.log(isElectionDayToday());
+// true if today is 2025-05-08
+```
 
 ## 🧩 Chrome Extension
 
+See [`packages/extension/`](packages/extension/)
+
+To load:
 1. Go to `chrome://extensions/`
-2. Enable **Developer Mode**
-3. Click **Load unpacked**
-4. Select the `packages/extension/` folder
-
-📦 To publish to the Chrome Web Store:
-- Zip the **contents** of the `packages/extension/` folder (not the folder itself)
-- Upload it to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
-
-Or use:
+2. Enable Developer Mode
+3. Load `packages/extension/`
 
 ```bash
 pnpm run zip-extension
 ```
 
-This will generate `habemus-papam-extension.zip` in the root directory.
+This will create `habemus-papam-extension.zip` at the root.
 
 ---
 
-## 📁 Project Structure
+## 🛠️ Monorepo Structure
 
 ```bash
 habemus-papam/
 ├── packages/
-│   ├── core/         # NPM package
-│   │   ├── src/
-│   │   ├── bin/
-│   │   ├── package.json
-│   │   └── README.md
+│   ├── core/         # CLI + npm package
 │   └── extension/    # Chrome Extension
-│       ├── popup.js/html
-│       ├── manifest.json
-│       └── assets
-├── .changeset/
-│   ├── config.json
-│   └── *.md
+├── .changeset/       # Changeset files for versioning
 ├── pnpm-workspace.yaml
-├── package.json (with publish/version scripts)
-├── README.md (this file)
-└── privacy-policy.md
+└── package.json      # Root workspace config
 ```
 
 ---
 
-## 🚀 Development & Versioning
-
-### Requirements
-
-- Node.js 18+
-- pnpm `>=7`
-
-### Setup
+## 🚀 Publishing Workflow
 
 ```bash
-pnpm install
+pnpm changeset              # create a version bump entry
+pnpm run version-packages   # apply the version
+pnpm run release-packages   # publish to npm
 ```
-
-### Run CLI locally
-
-```bash
-pnpm --filter habemus-papam start
-```
-
----
-
-## 🚀 Publishing with Changesets
-
-### Step 1: Create a changeset
-
-```bash
-pnpm changeset
-```
-
-Answer the prompts to choose the package and type of version bump (patch, minor, major).
-
-### Step 2: Apply versions
-
-```bash
-pnpm run version-packages
-```
-
-This updates `package.json` versions and generates a `CHANGELOG.md`.
-
-### Step 3: Publish updated packages
-
-```bash
-pnpm run release-packages
-```
-
-Only the packages with changesets will be published to npm.
 
 ---
 
 ## 👤 Author
 
 Vinicius Souza  
-[github.com/viniciuspizettadesouza](https://github.com/viniciuspizettadesouza)
+[https://github.com/viniciuspizettadesouza](https://github.com/viniciuspizettadesouza)
 
 ---
 
 ## 📄 License
 
-[MIT](LICENSE)
+[MIT](./license.md)
