@@ -1,4 +1,4 @@
-import { currentPope } from "./data/current-pope.js";
+import { currentPope } from "./data/popes.js";
 
 const [ELECTION_YEAR, ELECTION_MONTH, ELECTION_DAY] = currentPope.elected
   .split("-")

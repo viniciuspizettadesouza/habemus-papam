@@ -33,14 +33,31 @@ Today is the election day of the current pope!
 ```js
 import {
   getCurrentPope,
+  getPopeByDate,
+  getPopeByName,
+  getPreviousPope,
+  listPopes,
   isElectionAnniversary,
   isElectionDay,
 } from 'habemus-papam';
 
 console.log(getCurrentPope());
+console.log(getPopeByName('Francis'));
+console.log(getPopeByDate('2015-01-01'));
+console.log(getPreviousPope());
+console.log(listPopes());
 console.log(isElectionDay());
 console.log(isElectionAnniversary());
 ```
+
+Pope records contain `id`, `name`, `birthName`, `birthDate`, `elected`, and
+`pontificateEnd`. `listPopes()` returns the six bundled records in reverse
+chronological order. Name searches are case-insensitive and accept a papal
+name, record ID, or birth name. Date searches accept an ISO date string or a
+`Date` and return `null` during a vacant see or outside the available history.
+
+See the repository's [papal data sources](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/docs/DATA-SOURCES.md)
+for the dataset provenance and date conventions.
 
 `isElectionDay()` matches May 8, 2025 only. `isElectionAnniversary()` matches
 May 8 from 2025 onward. Both accept an optional `Date` and use its local

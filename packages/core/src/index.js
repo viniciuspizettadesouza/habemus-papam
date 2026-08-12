@@ -3,4 +3,10 @@ export {
   isElectionDay,
   isElectionDayToday,
 } from "./dates.js";
-export { getCurrentPope } from "./popes.js";
+export {
+  getCurrentPope,
+  getPopeByDate,
+  getPopeByName,
+  getPreviousPope,
+  listPopes,
+} from "./popes.js";
