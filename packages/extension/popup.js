@@ -1,6 +1,5 @@
-function isElectionDayToday() {
-  const today = new Date();
-  return today.getDate() === 8 && today.getMonth() === 4 && today.getFullYear() === 2025;
+function isElectionAnniversary(date = new Date()) {
+  return date.getDate() === 8 && date.getMonth() === 4;
 }
 
 function getCurrentPope() {
@@ -16,7 +15,7 @@ const output = `
   <strong>Habemus Papam!</strong><br>
   ${pope.name} (${pope.birthName})<br>
   Elected on ${pope.elected}.<br>
-  ${isElectionDayToday() ? "<strong>🎉 Today is the election anniversary!</strong>" : ""}
+  ${isElectionAnniversary() ? "<strong>🎉 Today is the election anniversary!</strong>" : ""}
 `;
 
 document.getElementById('output').innerHTML = output;

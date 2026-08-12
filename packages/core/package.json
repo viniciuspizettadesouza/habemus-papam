@@ -3,6 +3,11 @@
   "version": "1.0.3",
   "description": "Returns information about the current pope of the Catholic Church.",
   "main": "src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "CHANGELOG.md"
+  ],
   "bin": {
     "habemus-papam": "bin/cli.js"
   },
@@ -16,7 +21,10 @@
     "leo xiv"
   ],
   "scripts": {
-    "start": "node bin/cli.js"
+    "start": "node bin/cli.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "author": "Vinicius Souza",
   "license": "MIT",
@@ -28,5 +36,9 @@
   "bugs": {
     "url": "https://github.com/viniciuspizettadesouza/habemus-papam/issues"
   },
-  "homepage": "https://github.com/viniciuspizettadesouza/habemus-papam/tree/main/packages/core#readme"
+  "homepage": "https://github.com/viniciuspizettadesouza/habemus-papam/tree/main/packages/core#readme",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.10",
+    "vitest": "^4.1.10"
+  }
 }

@@ -4,7 +4,7 @@
 # Node.js
 node_modules/
 dist/
-pnpm-lock.yaml
+coverage/
 
 # Logs
 npm-debug.log*

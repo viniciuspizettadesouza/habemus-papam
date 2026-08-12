@@ -39,8 +39,12 @@ packages/extension/popup.js
 ```
 
 This separation keeps the initial version simple, but it allows the core and
-extension to become inconsistent. One current example is the distinction
-between “election day” and “election anniversary.”
+extension to become inconsistent. Until the extension consumes the core, every
+domain change must be applied and verified in both implementations.
+
+The core now distinguishes the exact 2025 election date from its anniversary.
+The extension uses the same anniversary semantics, but still duplicates that
+rule locally.
 
 ## Evolution direction
 
@@ -84,13 +88,12 @@ packages/
 
 The following changes are intentional, but do not belong to the baseline:
 
-1. Distinguish election day from election anniversary.
-2. Add automated tests and CI.
-3. Separate data from logic.
-4. Create a verifiable historical dataset.
-5. Extract the CLI when it grows.
-6. Build the extension so that it can consume the core.
-7. Migrate the core to TypeScript and publish artifacts from `dist`.
+1. Add continuous integration for the existing automated tests.
+2. Separate data from logic.
+3. Create a verifiable historical dataset.
+4. Extract the CLI when it grows.
+5. Build the extension so that it can consume the core.
+6. Migrate the core to TypeScript and publish artifacts from `dist`.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.

@@ -31,11 +31,21 @@ Today is the election day of the current pope!
 ## 📚 Usage as a Library
 
 ```js
-import { isElectionDayToday, getCurrentPope } from 'habemus-papam';
+import {
+  getCurrentPope,
+  isElectionAnniversary,
+  isElectionDay,
+} from 'habemus-papam';
 
 console.log(getCurrentPope());
-console.log(isElectionDayToday());
+console.log(isElectionDay());
+console.log(isElectionAnniversary());
 ```
+
+`isElectionDay()` matches May 8, 2025 only. `isElectionAnniversary()` matches
+May 8 from 2025 onward. Both accept an optional `Date` and use its local
+calendar date. The original `isElectionDayToday()` export remains available as
+a deprecated alias.
 
 ## 🧩 Chrome Extension
 
