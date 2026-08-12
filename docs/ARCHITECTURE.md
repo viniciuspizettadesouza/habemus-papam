@@ -55,6 +55,11 @@ Public query functions return copies so consumers cannot mutate the internal
 source of truth. Dataset provenance and boundary conventions are recorded in
 [DATA-SOURCES.md](./DATA-SOURCES.md).
 
+Date-only parsing and calendar arithmetic live in `date-utils.js`. Public date
+APIs accept ISO dates or `Date` instances, convert them to local-calendar ISO
+dates at the boundary, and perform elapsed-day arithmetic in UTC. This avoids
+daylight-saving transitions changing date-only results.
+
 GitHub Actions validates the project on Node.js 22, 24, and 26 for pushes and
 pull requests targeting `main`. The workflow installs from the committed
 lockfile, runs tests and coverage checks, smoke-tests the CLI, and inspects the

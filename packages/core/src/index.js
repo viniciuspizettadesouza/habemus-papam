@@ -1,4 +1,8 @@
 export {
+  daysSinceElection,
+  getNextElectionAnniversary,
+  getPontificateDuration,
+  getPopeAge,
   isElectionAnniversary,
   isElectionDay,
   isElectionDayToday,

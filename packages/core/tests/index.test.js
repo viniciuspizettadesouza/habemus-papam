@@ -1,9 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  daysSinceElection,
   getCurrentPope,
+  getNextElectionAnniversary,
   getPopeByDate,
   getPopeByName,
+  getPopeAge,
+  getPontificateDuration,
   getPreviousPope,
   isElectionAnniversary,
   isElectionDay,
@@ -107,6 +111,127 @@ describe("getPopeByDate", () => {
     expect(() => getPopeByDate("2025-02-30")).toThrow(TypeError);
     expect(() => getPopeByDate(new Date("invalid"))).toThrow(TypeError);
     expect(() => getPopeByDate(20250508)).toThrow(TypeError);
+  });
+});
+
+describe("getPontificateDuration", () => {
+  it("returns calendar parts and total elapsed days", () => {
+    expect(
+      getPontificateDuration(getCurrentPope(), "2026-08-08"),
+    ).toEqual({
+      years: 1,
+      months: 3,
+      days: 0,
+      totalDays: 457,
+    });
+  });
+
+  it("stops at the end of a completed pontificate", () => {
+    const francis = getPopeByName("Francis");
+
+    expect(getPontificateDuration(francis, "2026-08-08")).toEqual({
+      years: 12,
+      months: 1,
+      days: 8,
+      totalDays: 4422,
+    });
+  });
+
+  it("handles a reference day before the election day-of-month", () => {
+    const johnPaulII = getPopeByName("John Paul II");
+
+    expect(getPontificateDuration(johnPaulII, "2005-04-02")).toMatchObject({
+      years: 26,
+      months: 5,
+      days: 17,
+    });
+  });
+
+  it("rejects dates before the election and invalid records", () => {
+    expect(() =>
+      getPontificateDuration(getCurrentPope(), "2025-05-07"),
+    ).toThrow(RangeError);
+    expect(() => getPontificateDuration(null, "2025-05-08")).toThrow(
+      TypeError,
+    );
+    expect(() =>
+      getPontificateDuration(
+        { elected: "2025-05-08", pontificateEnd: "invalid" },
+        "2025-05-08",
+      ),
+    ).toThrow(TypeError);
+    expect(() =>
+      getPontificateDuration(
+        { elected: "2025-05-08", pontificateEnd: "2025-05-07" },
+        "2025-05-08",
+      ),
+    ).toThrow(RangeError);
+  });
+});
+
+describe("getPopeAge", () => {
+  it("uses completed calendar years", () => {
+    const leo = getCurrentPope();
+
+    expect(getPopeAge(leo, "2026-09-13")).toBe(70);
+    expect(getPopeAge(leo, "2026-09-14")).toBe(71);
+  });
+
+  it("handles a leap-day birth date", () => {
+    const pope = {
+      elected: "2020-01-01",
+      pontificateEnd: null,
+      birthDate: "2000-02-29",
+    };
+
+    expect(getPopeAge(pope, "2001-02-28")).toBe(1);
+  });
+
+  it("rejects dates before birth and records without a birth date", () => {
+    expect(() => getPopeAge(getCurrentPope(), "1955-09-13")).toThrow(
+      RangeError,
+    );
+    expect(() =>
+      getPopeAge(
+        { elected: "2025-05-08", pontificateEnd: null },
+        "2025-05-08",
+      ),
+    ).toThrow(TypeError);
+  });
+});
+
+describe("getNextElectionAnniversary", () => {
+  it("returns the upcoming anniversary", () => {
+    const leo = getCurrentPope();
+
+    expect(getNextElectionAnniversary(leo, "2026-05-07")).toBe("2026-05-08");
+  });
+
+  it("moves to the following year when called on the anniversary", () => {
+    expect(getNextElectionAnniversary(getCurrentPope(), "2026-05-08")).toBe(
+      "2027-05-08",
+    );
+  });
+
+  it("returns the election date when the reference predates the election", () => {
+    expect(getNextElectionAnniversary(getCurrentPope(), "2025-01-01")).toBe(
+      "2025-05-08",
+    );
+  });
+});
+
+describe("daysSinceElection", () => {
+  it("counts elapsed calendar days from zero", () => {
+    const leo = getCurrentPope();
+
+    expect(daysSinceElection(leo, "2025-05-08")).toBe(0);
+    expect(daysSinceElection(leo, "2025-05-09")).toBe(1);
+  });
+
+  it("rejects dates before the election", () => {
+    expect(() => daysSinceElection(getCurrentPope(), "2025-05-07")).toThrow(
+      RangeError,
+    );
   });
 });
 

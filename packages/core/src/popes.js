@@ -1,4 +1,5 @@
 import { currentPope, popes } from "./data/popes.js";
+import { toIsoDate } from "./date-utils.js";
 
 function clonePope(pope) {
   return pope ? { ...pope } : null;
@@ -17,30 +18,6 @@ function normalizeName(value) {
     .replace(/^pope\s+/, "")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
-}
-
-function toIsoDate(value) {
-  if (value instanceof Date) {
-    if (Number.isNaN(value.getTime())) {
-      throw new TypeError("Expected a valid Date or ISO date string.");
-    }
-
-    const year = String(value.getFullYear()).padStart(4, "0");
-    const month = String(value.getMonth() + 1).padStart(2, "0");
-    const day = String(value.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
-
-  if (
-    typeof value !== "string" ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
-    Number.isNaN(Date.parse(`${value}T00:00:00Z`)) ||
-    new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) !== value
-  ) {
-    throw new TypeError("Expected a valid Date or ISO date string.");
-  }
-
-  return value;
 }
 
 export function getCurrentPope() {

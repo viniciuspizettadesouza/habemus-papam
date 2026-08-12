@@ -43,9 +43,13 @@ Today is the election day of the current pope!
 
 ```js
 import {
+  daysSinceElection,
   getCurrentPope,
+  getNextElectionAnniversary,
   getPopeByDate,
   getPopeByName,
+  getPopeAge,
+  getPontificateDuration,
   getPreviousPope,
   listPopes,
   isElectionAnniversary,
@@ -57,6 +61,10 @@ console.log(getPopeByName('Francis'));
 console.log(getPopeByDate('2015-01-01'));
 console.log(getPreviousPope());
 console.log(listPopes());
+console.log(getPontificateDuration());
+console.log(getPopeAge());
+console.log(getNextElectionAnniversary());
+console.log(daysSinceElection());
 console.log(isElectionDay());
 console.log(isElectionAnniversary());
 ```
@@ -66,6 +74,13 @@ Pope records contain `id`, `name`, `birthName`, `birthDate`, `elected`, and
 chronological order. Name searches are case-insensitive and accept a papal
 name, record ID, or birth name. Date searches accept an ISO date string or a
 `Date` and return `null` during a vacant see or outside the available history.
+
+Date calculations default to the current pope and today, or accept a pope
+record and a `Date` or ISO date string. `getPontificateDuration()` returns
+calendar `years`, `months`, and `days` plus `totalDays`; completed pontificates
+stop at their recorded end date. `getPopeAge()` returns completed years,
+`getNextElectionAnniversary()` returns the first anniversary strictly after the
+reference date, and `daysSinceElection()` returns elapsed calendar days.
 
 `isElectionDay()` matches May 8, 2025 only. `isElectionAnniversary()` matches
 May 8 from 2025 onward. Both accept an optional `Date` and use its local
