@@ -1,6 +1,6 @@
 # Architecture
 
-## Current state (`v1.0.3`)
+## Baseline (`v1.0.3`)
 
 The project is a pnpm monorepo with two packages:
 
@@ -30,9 +30,13 @@ The Chrome extension is distributed separately. Currently, `popup.js` repeats
 ## Current flow
 
 ```text
-packages/core/src/index.js
-        ├── npm consumer
-        └── packages/core/bin/cli.js
+packages/core/src/data/current-pope.js
+        ├── dates.js
+        └── popes.js
+              ↓
+           index.js
+              ├── npm consumer
+              └── packages/core/bin/cli.js
 
 packages/extension/popup.js
         └── Chrome Extension
@@ -64,7 +68,7 @@ core: queries and date rules
     └── npm consumers
 ```
 
-The intended structure when growth justifies the separation is:
+The core now uses the following internal structure:
 
 ```text
 packages/
@@ -74,8 +78,8 @@ packages/
 │       ├── dates.js
 │       ├── popes.js
 │       └── index.js
-├── cli/
-└── extension/
+├── cli/                 # Planned when the CLI grows
+└── extension/           # Still duplicates core logic
 ```
 
 ## Architecture rules
@@ -93,11 +97,10 @@ packages/
 
 The following changes are intentional, but do not belong to the baseline:
 
-1. Separate data from logic.
-2. Create a verifiable historical dataset.
-3. Extract the CLI when it grows.
-4. Build the extension so that it can consume the core.
-5. Migrate the core to TypeScript and publish artifacts from `dist`.
+1. Create a verifiable historical dataset.
+2. Extract the CLI when it grows.
+3. Build the extension so that it can consume the core.
+4. Migrate the core to TypeScript and publish artifacts from `dist`.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.

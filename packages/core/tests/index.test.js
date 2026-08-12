@@ -15,6 +15,13 @@ describe("getCurrentPope", () => {
       elected: "2025-05-08",
     });
   });
+
+  it("does not expose mutable internal data", () => {
+    const pope = getCurrentPope();
+    pope.name = "Changed by a consumer";
+
+    expect(getCurrentPope().name).toBe("Pope Leo XIV");
+  });
 });
 
 describe("isElectionDay", () => {
