@@ -52,6 +52,12 @@ console.log(isElectionDayToday());
 
 ## 🛠️ Developer Usage
 
+Project guides:
+
+- [Create the project from scratch](docs/FROM-SCRATCH.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Publishing](docs/PUBLISHING.md)
+
 ### 🧩 Chrome Extension
 
 📁 See: [`packages/extension/`](packages/extension/)

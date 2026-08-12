@@ -1,0 +1,115 @@
+# Publishing
+
+This document describes the existing manual process. Release automation will
+be added only after tests and CI are established.
+
+## Semantic versioning
+
+The package follows Semantic Versioning:
+
+- `patch`: a backward-compatible fix, for example `1.0.3` → `1.0.4`
+- `minor`: a backward-compatible feature, for example `1.0.3` → `1.1.0`
+- `major`: an incompatible change, for example `1.0.3` → `2.0.0`
+
+Internal project growth does not require a major version. Use `major` only when
+consumers need to change their code.
+
+## 1. Prepare the environment
+
+Run these commands from the repository root:
+
+```bash
+pnpm install
+pnpm --filter habemus-papam start
+```
+
+Before publishing from a machine for the first time, authenticate with npm:
+
+```bash
+npm login
+npm whoami
+```
+
+## 2. Create a Changeset
+
+For a publishable change, run:
+
+```bash
+pnpm changeset
+```
+
+Select the `habemus-papam` package, choose `patch`, `minor`, or `major`, and
+write a consumer-focused summary. Include the generated `.changeset/` file in
+the same pull request as the change.
+
+Changes limited to root documentation or private configuration generally do
+not require a new package version.
+
+## 3. Apply versions and update the changelog
+
+When the changes are ready for a release, run:
+
+```bash
+pnpm run version-packages
+```
+
+Review the following before proceeding:
+
+- The new version in `packages/core/package.json`
+- `packages/core/CHANGELOG.md`
+- The removal of Changesets that have been consumed
+
+## 4. Validate the artifact
+
+Run the CLI and preview the files that will be included in the package:
+
+```bash
+pnpm --filter habemus-papam start
+pnpm --filter habemus-papam exec npm pack --dry-run
+```
+
+Confirm that the package contains the required library, CLI, README, and license
+material without including private files or extension artifacts.
+
+Once tests are added, `pnpm test` will be required at this stage.
+
+## 5. Publish
+
+After reviewing the version and artifact, run:
+
+```bash
+pnpm run release-packages
+```
+
+Changesets publishes the changed packages according to `.changeset/config.json`,
+which currently specifies public access.
+
+Confirm the publication:
+
+```bash
+npm view habemus-papam version
+npx habemus-papam
+```
+
+## 6. Record the release in Git
+
+After validating the publication, push the version commit and corresponding tag
+according to the repository's release workflow. Never move a tag that already
+represents a published version.
+
+## Planned evolution
+
+The future process should use GitHub Actions and npm Trusted Publishing:
+
+```text
+Changeset
+    ↓
+release pull request
+    ↓
+tests and package validation
+    ↓
+OIDC publication with provenance
+```
+
+Until that automation exists and has been tested, this manual procedure remains
+the reference.
