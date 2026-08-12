@@ -14,3 +14,8 @@ export {
   getPreviousPope,
   listPopes,
 } from "./popes.js";
+export {
+  getAveragePontificateDuration,
+  getLongestPontificate,
+  getShortestPontificate,
+} from "./stats.js";

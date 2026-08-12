@@ -2,13 +2,16 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   daysSinceElection,
+  getAveragePontificateDuration,
   getCurrentPope,
+  getLongestPontificate,
   getNextElectionAnniversary,
   getPopeByDate,
   getPopeByName,
   getPopeAge,
   getPontificateDuration,
   getPreviousPope,
+  getShortestPontificate,
   isElectionAnniversary,
   isElectionDay,
   isElectionDayToday,
@@ -232,6 +235,54 @@ describe("daysSinceElection", () => {
     expect(() => daysSinceElection(getCurrentPope(), "2025-05-07")).toThrow(
       RangeError,
     );
+  });
+});
+
+describe("pontificate statistics", () => {
+  it("returns the longest completed pontificate", () => {
+    expect(getLongestPontificate()).toEqual({
+      pope: expect.objectContaining({
+        id: "john-paul-ii",
+        name: "Pope John Paul II",
+      }),
+      duration: {
+        years: 26,
+        months: 5,
+        days: 17,
+        totalDays: 9665,
+      },
+    });
+  });
+
+  it("returns the shortest completed pontificate", () => {
+    expect(getShortestPontificate()).toEqual({
+      pope: expect.objectContaining({
+        id: "john-paul-i",
+        name: "Pope John Paul I",
+      }),
+      duration: {
+        years: 0,
+        months: 1,
+        days: 2,
+        totalDays: 33,
+      },
+    });
+  });
+
+  it("returns the rounded average and completed sample size", () => {
+    expect(getAveragePontificateDuration()).toEqual({
+      averageDays: 4503,
+      sampleSize: 5,
+    });
+  });
+
+  it("does not expose mutable internal records", () => {
+    const result = getLongestPontificate();
+    result.pope.name = "Changed by a consumer";
+    result.duration.totalDays = 0;
+
+    expect(getLongestPontificate().pope.name).toBe("Pope John Paul II");
+    expect(getLongestPontificate().duration.totalDays).toBe(9665);
   });
 });
 

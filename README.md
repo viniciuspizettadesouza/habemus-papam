@@ -44,13 +44,16 @@ Today is the election day of the current pope!
 ```js
 import {
   daysSinceElection,
+  getAveragePontificateDuration,
   getCurrentPope,
+  getLongestPontificate,
   getNextElectionAnniversary,
   getPopeByDate,
   getPopeByName,
   getPopeAge,
   getPontificateDuration,
   getPreviousPope,
+  getShortestPontificate,
   listPopes,
   isElectionAnniversary,
   isElectionDay,
@@ -65,6 +68,9 @@ console.log(getPontificateDuration());
 console.log(getPopeAge());
 console.log(getNextElectionAnniversary());
 console.log(daysSinceElection());
+console.log(getLongestPontificate());
+console.log(getShortestPontificate());
+console.log(getAveragePontificateDuration());
 console.log(isElectionDay());
 console.log(isElectionAnniversary());
 ```
@@ -81,6 +87,11 @@ calendar `years`, `months`, and `days` plus `totalDays`; completed pontificates
 stop at their recorded end date. `getPopeAge()` returns completed years,
 `getNextElectionAnniversary()` returns the first anniversary strictly after the
 reference date, and `daysSinceElection()` returns elapsed calendar days.
+
+Pontificate statistics use completed records only, keeping results stable while
+the current pontificate is ongoing. The longest and shortest functions return
+the pope and full duration. The average returns rounded `averageDays` and the
+completed `sampleSize`.
 
 `isElectionDay()` matches May 8, 2025 only. `isElectionAnniversary()` matches
 May 8 from 2025 onward. Both accept an optional `Date` and use its local
