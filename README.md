@@ -37,6 +37,28 @@ Pope Leo XIV (Robert Francis Prevost) was elected on 2025-05-08.
 Today is the election day of the current pope!
 ```
 
+The no-argument command remains backward-compatible. Additional commands:
+
+```bash
+npx habemus-papam current
+npx habemus-papam previous
+npx habemus-papam history
+npx habemus-papam pope francis
+npx habemus-papam pope "John Paul II"
+npx habemus-papam anniversary
+npx habemus-papam --help
+```
+
+Add `--json` to any data command for machine-readable output:
+
+```bash
+npx habemus-papam --json | jq '.name'
+npx habemus-papam history --json
+```
+
+Invalid commands, options, and pope names write an error to standard error and
+set a non-zero exit code.
+
 ---
 
 ## 📚 Usage as a Library

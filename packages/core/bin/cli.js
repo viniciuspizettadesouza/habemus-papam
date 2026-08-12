@@ -1,10 +1,14 @@
 #!/usr/bin/env node
-import { getCurrentPope, isElectionDay } from '../src/index.js';
+import { runCli } from "./commands.js";
 
-const pope = getCurrentPope();
+const result = runCli(process.argv.slice(2));
 
-console.log("Habemus Papam!");
-console.log(`${pope.name} (${pope.birthName}) was elected on ${pope.elected}.`);
-if (isElectionDay()) {
-  console.log("Today is the election day of the current pope!");
+if (result.output) {
+  console.log(result.output);
 }
+
+if (result.error) {
+  console.error(result.error);
+}
+
+process.exitCode = result.exitCode;

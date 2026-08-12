@@ -24,6 +24,12 @@ The `core` package has two responsibilities:
 1. It exposes the JavaScript API published as `habemus-papam`.
 2. It provides the executable used by `npx habemus-papam`.
 
+The executable in `bin/cli.js` is a thin process adapter. Command parsing,
+formatting, and JSON serialization live in `bin/commands.js`, which returns
+output and an exit code without writing directly to the terminal. This keeps
+the CLI behavior deterministic and independently testable until it is moved to
+its own workspace package.
+
 The Chrome extension is distributed separately. Currently, `popup.js` repeats
 `getCurrentPope()` and the date rule instead of importing them from the core.
 
