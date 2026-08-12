@@ -46,6 +46,11 @@ The core now distinguishes the exact 2025 election date from its anniversary.
 The extension uses the same anniversary semantics, but still duplicates that
 rule locally.
 
+GitHub Actions validates the project on Node.js 22, 24, and 26 for pushes and
+pull requests targeting `main`. The workflow installs from the committed
+lockfile, runs tests and coverage checks, smoke-tests the CLI, and inspects the
+npm package artifact.
+
 ## Evolution direction
 
 The project should evolve by separating data, domain rules, and interfaces:
@@ -88,12 +93,11 @@ packages/
 
 The following changes are intentional, but do not belong to the baseline:
 
-1. Add continuous integration for the existing automated tests.
-2. Separate data from logic.
-3. Create a verifiable historical dataset.
-4. Extract the CLI when it grows.
-5. Build the extension so that it can consume the core.
-6. Migrate the core to TypeScript and publish artifacts from `dist`.
+1. Separate data from logic.
+2. Create a verifiable historical dataset.
+3. Extract the CLI when it grows.
+4. Build the extension so that it can consume the core.
+5. Migrate the core to TypeScript and publish artifacts from `dist`.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.

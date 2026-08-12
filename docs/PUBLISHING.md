@@ -1,7 +1,8 @@
 # Publishing
 
-This document describes the existing manual process. Release automation will
-be added only after tests and CI are established.
+This document describes the existing manual release process. Continuous
+integration validates changes, but publishing remains manual until the release
+workflow is implemented and verified.
 
 ## Semantic versioning
 
@@ -71,7 +72,12 @@ pnpm --filter habemus-papam exec npm pack --dry-run
 Confirm that the package contains the required library, CLI, README, and license
 material without including private files or extension artifacts.
 
-Once tests are added, `pnpm test` will be required at this stage.
+The same checks run in CI and must pass before publishing:
+
+```bash
+pnpm test
+pnpm test:coverage
+```
 
 ## 5. Publish
 
