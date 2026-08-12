@@ -8,7 +8,7 @@ import {
   getPreviousPope,
   isElectionDay,
   listPopes,
-} from "../src/index.js";
+} from "habemus-papam";
 
 const USAGE = `Usage: habemus-papam [command] [options]
 

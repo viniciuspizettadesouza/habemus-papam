@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "files": [
     "bin",
+    "dist",
     "src",
     "CHANGELOG.md"
   ],
@@ -21,7 +22,7 @@
     "leo xiv"
   ],
   "scripts": {
-    "start": "node bin/cli.js",
+    "prepack": "pnpm --filter @habemus-papam/cli build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

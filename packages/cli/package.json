@@ -1,0 +1,21 @@
+{
+  "name": "@habemus-papam/cli",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node src/cli.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "habemus-papam": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.10",
+    "esbuild": "^0.28.2",
+    "vitest": "^4.1.10"
+  }
+}

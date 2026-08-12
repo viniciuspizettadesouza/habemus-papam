@@ -11,9 +11,10 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release-packages": "changeset publish",
-    "start:cli": "pnpm --filter habemus-papam start",
-    "test": "pnpm --filter habemus-papam test",
-    "test:coverage": "pnpm --filter habemus-papam test:coverage"
+    "build:cli": "pnpm --filter @habemus-papam/cli build",
+    "start:cli": "pnpm --filter @habemus-papam/cli start",
+    "test": "pnpm -r --if-present test",
+    "test:coverage": "pnpm -r --if-present test:coverage"
   },
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {

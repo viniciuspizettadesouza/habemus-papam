@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { runCli } from "../bin/commands.js";
+import { runCli } from "../src/commands.js";
 
 const NOW = new Date(2026, 7, 13);
 

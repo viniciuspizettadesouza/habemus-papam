@@ -19,19 +19,26 @@ habemus-papam/
 └── pnpm-workspace.yaml
 ```
 
-The `core` package has two responsibilities:
+In the baseline, the `core` package had two responsibilities:
 
 1. It exposes the JavaScript API published as `habemus-papam`.
 2. It provides the executable used by `npx habemus-papam`.
 
-The executable in `bin/cli.js` is a thin process adapter. Command parsing,
-formatting, and JSON serialization live in `bin/commands.js`, which returns
-output and an exit code without writing directly to the terminal. This keeps
-the CLI behavior deterministic and independently testable until it is moved to
-its own workspace package.
-
 The Chrome extension is distributed separately. Currently, `popup.js` repeats
 `getCurrentPope()` and the date rule instead of importing them from the core.
+
+## Current architecture
+
+The CLI now has its own private workspace package. It imports only the core's
+public API. Its process adapter, command handling, formatting, tests, and build
+configuration no longer live in the core package.
+
+To preserve both `import ... from "habemus-papam"` and
+`npx habemus-papam`, esbuild creates a self-contained CLI executable at
+`packages/core/dist/cli.js` during `prepack`. A two-line compatibility launcher
+at `packages/core/bin/cli.js` loads that generated artifact. Both files are
+published inside the existing npm package, but the bundle is not treated as
+source code.
 
 ## Current flow
 
@@ -42,8 +49,14 @@ packages/core/src/data/popes.js
         └── stats.js
                ↓
             index.js
-               ├── npm consumer
-               └── packages/core/bin/cli.js
+               ├── npm consumers
+               └── packages/cli/src
+                         ↓ esbuild
+                  packages/core/dist/cli.js
+                         ↓
+                  packages/core/bin/cli.js
+                         ↓
+                  npx habemus-papam
 
 packages/extension/popup.js
         └── Chrome Extension
@@ -100,7 +113,10 @@ packages/
 │       ├── popes.js
 │       ├── stats.js
 │       └── index.js
-├── cli/                 # Planned when the CLI grows
+├── cli/
+│   ├── src/
+│   ├── tests/
+│   └── build.mjs
 └── extension/           # Still duplicates core logic
 ```
 
@@ -120,9 +136,8 @@ packages/
 The following changes are intentional, but do not belong to the baseline:
 
 1. Expand the sourced dataset beyond Paul VI when needed.
-2. Extract the CLI when it grows.
-3. Build the extension so that it can consume the core.
-4. Migrate the core to TypeScript and publish artifacts from `dist`.
+2. Build the extension so that it can consume the core.
+3. Migrate the core to TypeScript and publish library artifacts from `dist`.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.

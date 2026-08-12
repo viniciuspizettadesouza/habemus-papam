@@ -170,6 +170,12 @@ pnpm test:coverage
 pnpm run start:cli
 ```
 
+Build the executable embedded in the npm package:
+
+```bash
+pnpm run build:cli
+```
+
 #### ✏️ Create a version bump:
 
 ```bash
@@ -195,7 +201,8 @@ pnpm run release-packages
 ```bash
 habemus-papam/
 ├── packages/
-│   ├── core/         # CLI + npm package
+│   ├── core/         # Reusable library + published npm package
+│   ├── cli/          # CLI source, tests, and bundler
 │   └── extension/    # Chrome Extension
 ├── .changeset/       # Changeset files for versioning
 ├── pnpm-workspace.yaml

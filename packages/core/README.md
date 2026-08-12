@@ -1,6 +1,6 @@
 # habemus-papam
 
-A cross-platform JavaScript tool that provides information about the current Pope of the Catholic Church. This is the core CLI and library package from the monorepo.
+A cross-platform JavaScript tool that provides information about the current Pope of the Catholic Church. This is the reusable library package; the separately maintained CLI is bundled into this package for `npx` compatibility.
 
 ## ✝️ About "Habemus Papam"
 
