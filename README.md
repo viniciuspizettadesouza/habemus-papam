@@ -137,9 +137,10 @@ Project guides:
 
 To load manually:
 
-1. Go to `chrome://extensions/`
-2. Enable Developer Mode
-3. Load the folder: `packages/extension/`
+1. Build the extension with `pnpm run build:extension`.
+2. Go to `chrome://extensions/`.
+3. Enable Developer Mode.
+4. Load the folder: `packages/extension/dist/`.
 
 To publish:
 
@@ -203,7 +204,7 @@ habemus-papam/
 ├── packages/
 │   ├── core/         # Reusable library + published npm package
 │   ├── cli/          # CLI source, tests, and bundler
-│   └── extension/    # Chrome Extension
+│   └── extension/    # Chrome Extension source, tests, and bundler
 ├── .changeset/       # Changeset files for versioning
 ├── pnpm-workspace.yaml
 └── package.json      # Root workspace config + scripts

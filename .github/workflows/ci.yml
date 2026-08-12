@@ -52,5 +52,8 @@ jobs:
       - name: Smoke-test CLI
         run: pnpm start:cli
 
+      - name: Build Chrome extension
+        run: pnpm build:extension
+
       - name: Validate npm package
         run: pnpm --filter habemus-papam exec npm pack --dry-run

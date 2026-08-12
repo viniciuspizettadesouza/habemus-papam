@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "zip-extension": "cd packages/extension && zip -r ../../habemus-papam-extension.zip .",
+    "build:extension": "pnpm --filter @habemus-papam/extension build",
+    "zip-extension": "pnpm build:extension && cd packages/extension/dist && zip -FSr ../../../habemus-papam-extension.zip .",
     "publish-core": "pnpm --filter habemus-papam publish --access public",
     "bump-patch": "pnpm --filter habemus-papam version patch",
     "bump-minor": "pnpm --filter habemus-papam version minor",

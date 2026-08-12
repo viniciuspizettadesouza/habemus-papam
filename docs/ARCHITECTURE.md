@@ -24,14 +24,15 @@ In the baseline, the `core` package had two responsibilities:
 1. It exposes the JavaScript API published as `habemus-papam`.
 2. It provides the executable used by `npx habemus-papam`.
 
-The Chrome extension is distributed separately. Currently, `popup.js` repeats
-`getCurrentPope()` and the date rule instead of importing them from the core.
+The Chrome extension is distributed separately. In that version, `popup.js`
+repeated `getCurrentPope()` and the date rule instead of importing them from
+the core.
 
 ## Current architecture
 
-The CLI now has its own private workspace package. It imports only the core's
-public API. Its process adapter, command handling, formatting, tests, and build
-configuration no longer live in the core package.
+The CLI and Chrome extension now have their own private workspace packages.
+Both import only the core's public API. Interface-specific adapters, rendering,
+tests, and build configuration no longer live in the core package.
 
 To preserve both `import ... from "habemus-papam"` and
 `npx habemus-papam`, esbuild creates a self-contained CLI executable at
@@ -39,6 +40,10 @@ To preserve both `import ... from "habemus-papam"` and
 at `packages/core/bin/cli.js` loads that generated artifact. Both files are
 published inside the existing npm package, but the bundle is not treated as
 source code.
+
+The extension uses esbuild to create a self-contained browser script. Its build
+copies the manifest, popup HTML, and icon into `packages/extension/dist`, which
+is the only directory loaded into Chrome or included in the Web Store archive.
 
 ## Current flow
 
@@ -50,25 +55,23 @@ packages/core/src/data/popes.js
                ↓
             index.js
                ├── npm consumers
-               └── packages/cli/src
+               ├── packages/cli/src
+               │         ↓ esbuild
+               │  packages/core/dist/cli.js
+               │         ↓
+               │  packages/core/bin/cli.js
+               │         ↓
+               │  npx habemus-papam
+               └── packages/extension/src
                          ↓ esbuild
-                  packages/core/dist/cli.js
+                  packages/extension/dist
                          ↓
-                  packages/core/bin/cli.js
-                         ↓
-                  npx habemus-papam
-
-packages/extension/popup.js
-        └── Chrome Extension
+                  Chrome Extension
 ```
 
-This separation keeps the initial version simple, but it allows the core and
-extension to become inconsistent. Until the extension consumes the core, every
-domain change must be applied and verified in both implementations.
-
-The core now distinguishes the exact 2025 election date from its anniversary.
-The extension uses the same anniversary semantics, but still duplicates that
-rule locally.
+The core is the single source of truth for papal data and date rules. The CLI
+and extension contain only interface-specific behavior, so domain changes are
+implemented and verified once.
 
 The bundled dataset contains six sourced records from Paul VI through Leo XIV.
 Public query functions return copies so consumers cannot mutate the internal
@@ -86,8 +89,8 @@ dataset immutability.
 
 GitHub Actions validates the project on Node.js 22, 24, and 26 for pushes and
 pull requests targeting `main`. The workflow installs from the committed
-lockfile, runs tests and coverage checks, smoke-tests the CLI, and inspects the
-npm package artifact.
+lockfile, runs tests and coverage checks, smoke-tests the CLI, builds the Chrome
+extension, and inspects the npm package artifact.
 
 ## Evolution direction
 
@@ -117,7 +120,12 @@ packages/
 │   ├── src/
 │   ├── tests/
 │   └── build.mjs
-└── extension/           # Still duplicates core logic
+└── extension/
+    ├── src/
+    ├── tests/
+    ├── build.mjs
+    ├── manifest.json
+    └── popup.html
 ```
 
 ## Architecture rules
@@ -136,8 +144,7 @@ packages/
 The following changes are intentional, but do not belong to the baseline:
 
 1. Expand the sourced dataset beyond Paul VI when needed.
-2. Build the extension so that it can consume the core.
-3. Migrate the core to TypeScript and publish library artifacts from `dist`.
+2. Migrate the core to TypeScript and publish library artifacts from `dist`.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.
