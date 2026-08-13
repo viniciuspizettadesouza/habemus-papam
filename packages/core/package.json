@@ -35,6 +35,7 @@
   "scripts": {
     "build": "node build.mjs",
     "prepack": "node build.mjs && node ../cli/build.mjs",
+    "test:package": "node scripts/test-package.mjs",
     "typecheck": "tsc --project tsconfig.types.json",
     "test": "pnpm run build && vitest run",
     "test:watch": "vitest",

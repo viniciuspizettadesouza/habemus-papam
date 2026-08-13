@@ -55,5 +55,5 @@ jobs:
       - name: Build Chrome extension
         run: pnpm build:extension
 
-      - name: Validate npm package
-        run: pnpm --filter habemus-papam exec npm pack --dry-run
+      - name: Test packed npm package
+        run: pnpm test:package

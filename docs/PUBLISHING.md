@@ -70,6 +70,7 @@ pnpm typecheck
 pnpm start:cli
 pnpm build:cli
 pnpm --filter habemus-papam exec npm pack --dry-run
+pnpm test:package
 ```
 
 The package's `prepack` script rebuilds the TypeScript library and private CLI
@@ -83,6 +84,11 @@ material without including private files or extension artifacts.
 The package requires Node.js 22 or newer. Its `exports` map must keep the root
 API resolvable from the packed artifact while preventing internal modules from
 becoming accidental public entry points.
+
+`pnpm test:package` creates an isolated temporary consumer, installs the packed
+tarball, compiles a TypeScript import, runs a JavaScript import and the
+installed CLI, checks the export boundary, and verifies the published file
+allowlist. The temporary consumer is removed after the check.
 
 The same checks run in CI and must pass before publishing:
 

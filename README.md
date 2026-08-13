@@ -178,6 +178,13 @@ pnpm run build:core
 pnpm run typecheck
 ```
 
+Test the exact npm tarball as an isolated JavaScript, TypeScript, and CLI
+consumer:
+
+```bash
+pnpm run test:package
+```
+
 #### ▶️ Run CLI locally (monorepo)
 
 ```bash

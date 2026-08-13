@@ -16,6 +16,7 @@
     "build:cli": "pnpm --filter @habemus-papam/cli build",
     "start:cli": "pnpm --filter @habemus-papam/cli start",
     "typecheck": "pnpm --filter habemus-papam typecheck",
+    "test:package": "pnpm --filter habemus-papam test:package",
     "test": "pnpm build:core && pnpm typecheck && pnpm -r --if-present test",
     "test:coverage": "pnpm build:core && pnpm typecheck && pnpm -r --if-present test:coverage"
   },

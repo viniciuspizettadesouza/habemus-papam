@@ -106,7 +106,12 @@ GitHub Actions validates the project on Node.js 22, 24, and 26 for pushes and
 pull requests targeting `main`. The workflow installs from the committed
 lockfile, compiles and type-checks the core, runs tests and coverage checks,
 smoke-tests the CLI, builds the Chrome extension, and inspects the npm package
-artifact.
+artifact through an isolated installed consumer.
+
+The package integration test creates the same tarball used for publication. It
+validates JavaScript and TypeScript imports, the installed CLI, package exports,
+and the file allowlist outside the workspace before removing its temporary
+consumer.
 
 ## Evolution direction
 
@@ -134,6 +139,8 @@ packages/
 │   │   ├── types.ts
 │   │   └── index.ts
 │   ├── type-tests/
+│   ├── scripts/
+│   │   └── test-package.mjs
 │   ├── build.mjs
 │   └── tsconfig.json
 ├── cli/
