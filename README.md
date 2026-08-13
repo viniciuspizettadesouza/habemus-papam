@@ -123,6 +123,9 @@ a deprecated alias.
 The package includes TypeScript declarations for every public function and
 data structure; no separate `@types` package is required.
 
+The supported runtime is Node.js 22 or newer. CI tests the maintained
+even-numbered Node.js release lines covered by the project.
+
 ---
 
 ## 🛠️ Developer Usage

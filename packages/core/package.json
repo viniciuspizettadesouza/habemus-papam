@@ -4,6 +4,14 @@
   "description": "Returns information about the current pope of the Catholic Church.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "bin",
     "dist",
@@ -13,6 +21,9 @@
     "habemus-papam": "bin/cli.js"
   },
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "keywords": [
     "pope",
     "vatican",
@@ -25,9 +36,9 @@
     "build": "node build.mjs",
     "prepack": "node build.mjs && node ../cli/build.mjs",
     "typecheck": "tsc --project tsconfig.types.json",
-    "test": "vitest run",
+    "test": "pnpm run build && vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "pnpm run build && vitest run --coverage"
   },
   "author": "Vinicius Souza",
   "license": "MIT",

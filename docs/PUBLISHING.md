@@ -80,6 +80,10 @@ configuration must remain excluded.
 Confirm that the package contains the required library, CLI, README, and license
 material without including private files or extension artifacts.
 
+The package requires Node.js 22 or newer. Its `exports` map must keep the root
+API resolvable from the packed artifact while preventing internal modules from
+becoming accidental public entry points.
+
 The same checks run in CI and must pass before publishing:
 
 ```bash

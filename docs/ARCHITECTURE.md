@@ -38,6 +38,11 @@ The core is authored in strict TypeScript. The TypeScript compiler emits ESM
 JavaScript and declarations into `packages/core/dist`; npm consumers never
 execute source files directly.
 
+The package `exports` map makes the root import the only code entry point;
+internal modules are not part of the public contract. The supported runtime
+floor is Node.js 22, and CI tracks the maintained even-numbered release lines
+from that version onward.
+
 To preserve both `import ... from "habemus-papam"` and
 `npx habemus-papam`, esbuild creates a self-contained CLI executable at
 `packages/core/dist/cli.js` during `prepack`. A two-line compatibility launcher
@@ -159,9 +164,8 @@ packages/
 The following changes are intentional, but do not belong to the baseline:
 
 1. Expand the sourced dataset beyond Paul VI when needed.
-2. Add a restrictive package `exports` map only after deciding whether deep
-   imports need a compatibility period.
-3. Declare a Node.js engine range alongside an explicit support policy.
+2. Advance the Node.js minimum only after its release line reaches end of life
+   and the compatibility impact has been reviewed.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.

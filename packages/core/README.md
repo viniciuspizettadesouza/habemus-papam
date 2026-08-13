@@ -53,6 +53,9 @@ set a non-zero exit code.
 The package ships its own TypeScript declarations, so TypeScript consumers do
 not need to install a separate `@types` package.
 
+Node.js 22 or newer is required. The package exposes its documented API only
+through the root `habemus-papam` entry point.
+
 ## 📚 Usage as a Library
 
 ```js
