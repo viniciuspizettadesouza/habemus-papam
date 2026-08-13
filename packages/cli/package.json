@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs",
-    "start": "node src/cli.js",
+    "build": "pnpm --filter habemus-papam build && node build.mjs",
+    "start": "pnpm --filter habemus-papam build && node src/cli.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

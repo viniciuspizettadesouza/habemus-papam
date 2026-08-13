@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests
+      - name: Build, type-check, and test
         run: pnpm test
 
       - name: Enforce coverage thresholds

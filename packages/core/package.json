@@ -2,11 +2,11 @@
   "name": "habemus-papam",
   "version": "1.1.0",
   "description": "Returns information about the current pope of the Catholic Church.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "bin",
     "dist",
-    "src",
     "CHANGELOG.md"
   ],
   "bin": {
@@ -22,7 +22,9 @@
     "leo xiv"
   ],
   "scripts": {
-    "prepack": "pnpm --filter @habemus-papam/cli build",
+    "build": "node build.mjs",
+    "prepack": "node build.mjs && node ../cli/build.mjs",
+    "typecheck": "tsc --project tsconfig.types.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
@@ -31,7 +33,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/viniciuspizettadesouza/habemus-papam",
+    "url": "git+https://github.com/viniciuspizettadesouza/habemus-papam.git",
     "directory": "packages/core"
   },
   "bugs": {
@@ -40,6 +42,7 @@
   "homepage": "https://github.com/viniciuspizettadesouza/habemus-papam/tree/main/packages/core#readme",
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.10",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   }
 }

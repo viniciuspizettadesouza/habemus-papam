@@ -1,6 +1,14 @@
+import type { DateInput, PontificateDuration } from "./types.js";
+
 const MILLISECONDS_PER_DAY = 86_400_000;
 
-export function toIsoDate(value) {
+interface DateParts {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export function toIsoDate(value: DateInput): string {
   if (value instanceof Date) {
     if (Number.isNaN(value.getTime())) {
       throw new TypeError("Expected a valid Date or ISO date string.");
@@ -24,18 +32,18 @@ export function toIsoDate(value) {
   return value;
 }
 
-export function getDateParts(isoDate) {
+export function getDateParts(isoDate: string): DateParts {
   const [year, month, day] = isoDate.split("-").map(Number);
   return { year, month, day };
 }
 
-export function formatDateParts({ year, month, day }) {
+export function formatDateParts({ year, month, day }: DateParts): string {
   return [year, month, day]
     .map((part, index) => String(part).padStart(index === 0 ? 4 : 2, "0"))
     .join("-");
 }
 
-export function daysBetween(start, end) {
+export function daysBetween(start: string, end: string): number {
   const startParts = getDateParts(start);
   const endParts = getDateParts(end);
   const startTime = Date.UTC(
@@ -48,11 +56,11 @@ export function daysBetween(start, end) {
   return Math.round((endTime - startTime) / MILLISECONDS_PER_DAY);
 }
 
-function daysInMonth(year, month) {
+function daysInMonth(year: number, month: number): number {
   return new Date(Date.UTC(year, month, 0)).getUTCDate();
 }
 
-function addYears(date, years) {
+function addYears(date: DateParts, years: number): DateParts {
   const year = date.year + years;
   return {
     year,
@@ -61,7 +69,7 @@ function addYears(date, years) {
   };
 }
 
-function addMonths(date, months) {
+function addMonths(date: DateParts, months: number): DateParts {
   const monthIndex = date.year * 12 + date.month - 1 + months;
   const year = Math.floor(monthIndex / 12);
   const month = (monthIndex % 12) + 1;
@@ -73,7 +81,10 @@ function addMonths(date, months) {
   };
 }
 
-export function calendarDifference(start, end) {
+export function calendarDifference(
+  start: string,
+  end: string,
+): PontificateDuration {
   const startParts = getDateParts(start);
   const endParts = getDateParts(end);
   let years = endParts.year - startParts.year;

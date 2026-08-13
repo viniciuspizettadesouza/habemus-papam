@@ -50,6 +50,9 @@ npx habemus-papam history --json
 Invalid commands, options, and pope names write an error to standard error and
 set a non-zero exit code.
 
+The package ships its own TypeScript declarations, so TypeScript consumers do
+not need to install a separate `@types` package.
+
 ## 📚 Usage as a Library
 
 ```js

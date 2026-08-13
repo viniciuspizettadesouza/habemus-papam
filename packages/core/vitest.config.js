@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     coverage: {
       provider: "v8",
-      include: ["src/**/*.js"],
+      include: ["src/**/*.ts"],
       thresholds: {
         branches: 80,
         functions: 80,

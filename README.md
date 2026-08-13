@@ -120,6 +120,9 @@ May 8 from 2025 onward. Both accept an optional `Date` and use its local
 calendar date. The original `isElectionDayToday()` export remains available as
 a deprecated alias.
 
+The package includes TypeScript declarations for every public function and
+data structure; no separate `@types` package is required.
+
 ---
 
 ## 🛠️ Developer Usage
@@ -165,6 +168,13 @@ pnpm test
 pnpm test:coverage
 ```
 
+Build and type-check the core package:
+
+```bash
+pnpm run build:core
+pnpm run typecheck
+```
+
 #### ▶️ Run CLI locally (monorepo)
 
 ```bash
@@ -202,7 +212,7 @@ pnpm run release-packages
 ```bash
 habemus-papam/
 ├── packages/
-│   ├── core/         # Reusable library + published npm package
+│   ├── core/         # TypeScript library + published npm package
 │   ├── cli/          # CLI source, tests, and bundler
 │   └── extension/    # Chrome Extension source, tests, and bundler
 ├── .changeset/       # Changeset files for versioning

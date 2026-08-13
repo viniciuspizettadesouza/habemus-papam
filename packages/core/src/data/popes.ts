@@ -1,4 +1,6 @@
-const records = [
+import type { Pope } from "../types.js";
+
+const records: Pope[] = [
   {
     id: "leo-xiv",
     name: "Pope Leo XIV",
@@ -49,5 +51,7 @@ const records = [
   },
 ];
 
-export const popes = Object.freeze(records.map((pope) => Object.freeze(pope)));
-export const currentPope = popes[0];
+export const popes: readonly Readonly<Pope>[] = Object.freeze(
+  records.map((pope) => Object.freeze(pope)),
+);
+export const currentPope = popes[0] as Readonly<Pope>;

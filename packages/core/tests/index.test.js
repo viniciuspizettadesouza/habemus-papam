@@ -16,7 +16,7 @@ import {
   isElectionDay,
   isElectionDayToday,
   listPopes,
-} from "../src/index.js";
+} from "../src/index.ts";
 
 describe("getCurrentPope", () => {
   it("returns Pope Leo XIV", () => {

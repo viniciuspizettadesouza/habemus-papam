@@ -6,18 +6,24 @@ import {
   getDateParts,
   toIsoDate,
 } from "./date-utils.js";
+import type {
+  DateInput,
+  PopeAgeInput,
+  PontificateDuration,
+  PontificateInput,
+} from "./types.js";
 
 const [ELECTION_YEAR, ELECTION_MONTH, ELECTION_DAY] = currentPope.elected
   .split("-")
   .map(Number);
 
-function validateDate(date) {
+function validateDate(date: Date): void {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
     throw new TypeError("Expected a valid Date instance.");
   }
 }
 
-export function isElectionDay(date = new Date()) {
+export function isElectionDay(date: Date = new Date()): boolean {
   validateDate(date);
 
   return (
@@ -27,7 +33,7 @@ export function isElectionDay(date = new Date()) {
   );
 }
 
-export function isElectionAnniversary(date = new Date()) {
+export function isElectionAnniversary(date: Date = new Date()): boolean {
   validateDate(date);
 
   return (
@@ -38,31 +44,38 @@ export function isElectionAnniversary(date = new Date()) {
 }
 
 /** @deprecated Use isElectionDay() instead. */
-export function isElectionDayToday() {
+export function isElectionDayToday(): boolean {
   return isElectionDay();
 }
 
-function validatePope(pope) {
+function validatePope(pope: unknown): asserts pope is PontificateInput {
+  const record = pope as Partial<PontificateInput> | null;
+
   if (
-    pope === null ||
-    typeof pope !== "object" ||
-    typeof pope.elected !== "string"
+    record === null ||
+    typeof record !== "object" ||
+    typeof record.elected !== "string" ||
+    (record.pontificateEnd !== null &&
+      typeof record.pontificateEnd !== "string")
   ) {
     throw new TypeError("Expected a pope record.");
   }
 
-  toIsoDate(pope.elected);
+  toIsoDate(record.elected);
 
-  if (pope.pontificateEnd !== null) {
-    toIsoDate(pope.pontificateEnd);
+  if (record.pontificateEnd !== null) {
+    toIsoDate(record.pontificateEnd);
 
-    if (pope.pontificateEnd < pope.elected) {
+    if (record.pontificateEnd < record.elected) {
       throw new RangeError("The pontificate ends before the pope's election.");
     }
   }
 }
 
-export function getPontificateDuration(pope = currentPope, date = new Date()) {
+export function getPontificateDuration(
+  pope: Readonly<PontificateInput> = currentPope,
+  date: DateInput = new Date(),
+): PontificateDuration {
   validatePope(pope);
   const referenceDate = toIsoDate(date);
 
@@ -78,7 +91,10 @@ export function getPontificateDuration(pope = currentPope, date = new Date()) {
   return calendarDifference(pope.elected, endDate);
 }
 
-export function getPopeAge(pope = currentPope, date = new Date()) {
+export function getPopeAge(
+  pope: Readonly<PopeAgeInput> = currentPope,
+  date: DateInput = new Date(),
+): number {
   validatePope(pope);
 
   if (typeof pope.birthDate !== "string") {
@@ -96,9 +112,9 @@ export function getPopeAge(pope = currentPope, date = new Date()) {
 }
 
 export function getNextElectionAnniversary(
-  pope = currentPope,
-  date = new Date(),
-) {
+  pope: Readonly<PontificateInput> = currentPope,
+  date: DateInput = new Date(),
+): string {
   validatePope(pope);
   const referenceDate = toIsoDate(date);
   const election = getDateParts(pope.elected);
@@ -122,7 +138,10 @@ export function getNextElectionAnniversary(
   return anniversary;
 }
 
-export function daysSinceElection(pope = currentPope, date = new Date()) {
+export function daysSinceElection(
+  pope: Readonly<PontificateInput> = currentPope,
+  date: DateInput = new Date(),
+): number {
   validatePope(pope);
   const referenceDate = toIsoDate(date);
   const elapsedDays = daysBetween(pope.elected, referenceDate);

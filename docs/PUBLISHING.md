@@ -65,14 +65,17 @@ Review the following before proceeding:
 Run the CLI and preview the files that will be included in the package:
 
 ```bash
+pnpm build:core
+pnpm typecheck
 pnpm start:cli
 pnpm build:cli
 pnpm --filter habemus-papam exec npm pack --dry-run
 ```
 
-The package's `prepack` script rebuilds the private CLI workspace automatically.
-The resulting `dist/cli.js` must be present in the tarball, while CLI source,
-tests, and build configuration must remain excluded.
+The package's `prepack` script rebuilds the TypeScript library and private CLI
+workspace automatically. The tarball must contain compiled library JavaScript,
+TypeScript declarations, and `dist/cli.js`. TypeScript source, tests, and build
+configuration must remain excluded.
 
 Confirm that the package contains the required library, CLI, README, and license
 material without including private files or extension artifacts.

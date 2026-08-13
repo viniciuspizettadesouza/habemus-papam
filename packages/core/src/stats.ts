@@ -1,23 +1,31 @@
 import { popes } from "./data/popes.js";
 import { calendarDifference } from "./date-utils.js";
+import type {
+  AveragePontificateDuration,
+  Pope,
+  PontificateResult,
+} from "./types.js";
 
-function getCompletedPontificates() {
+function getCompletedPontificates(): PontificateResult[] {
   return popes
-    .filter((pope) => pope.pontificateEnd !== null)
+    .filter(
+      (pope): pope is Readonly<Pope> & { pontificateEnd: string } =>
+        pope.pontificateEnd !== null,
+    )
     .map((pope) => ({
       pope,
       duration: calendarDifference(pope.elected, pope.pontificateEnd),
     }));
 }
 
-function cloneResult(result) {
+function cloneResult(result: PontificateResult): PontificateResult {
   return {
     pope: { ...result.pope },
     duration: { ...result.duration },
   };
 }
 
-export function getLongestPontificate() {
+export function getLongestPontificate(): PontificateResult {
   const result = getCompletedPontificates().reduce((longest, candidate) =>
     candidate.duration.totalDays > longest.duration.totalDays
       ? candidate
@@ -27,7 +35,7 @@ export function getLongestPontificate() {
   return cloneResult(result);
 }
 
-export function getShortestPontificate() {
+export function getShortestPontificate(): PontificateResult {
   const result = getCompletedPontificates().reduce((shortest, candidate) =>
     candidate.duration.totalDays < shortest.duration.totalDays
       ? candidate
@@ -37,7 +45,7 @@ export function getShortestPontificate() {
   return cloneResult(result);
 }
 
-export function getAveragePontificateDuration() {
+export function getAveragePontificateDuration(): AveragePontificateDuration {
   const completed = getCompletedPontificates();
   const totalDays = completed.reduce(
     (sum, result) => sum + result.duration.totalDays,

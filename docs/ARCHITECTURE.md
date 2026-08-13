@@ -34,6 +34,10 @@ The CLI and Chrome extension now have their own private workspace packages.
 Both import only the core's public API. Interface-specific adapters, rendering,
 tests, and build configuration no longer live in the core package.
 
+The core is authored in strict TypeScript. The TypeScript compiler emits ESM
+JavaScript and declarations into `packages/core/dist`; npm consumers never
+execute source files directly.
+
 To preserve both `import ... from "habemus-papam"` and
 `npx habemus-papam`, esbuild creates a self-contained CLI executable at
 `packages/core/dist/cli.js` during `prepack`. A two-line compatibility launcher
@@ -48,12 +52,18 @@ is the only directory loaded into Chrome or included in the Web Store archive.
 ## Current flow
 
 ```text
-packages/core/src/data/popes.js
-        ├── dates.js
-        ├── popes.js
-        └── stats.js
+packages/core/src/data/popes.ts
+        ├── dates.ts
+        ├── popes.ts
+        └── stats.ts
                ↓
-            index.js
+            index.ts
+               ↓ tsc
+        packages/core/dist/
+        ├── index.js
+        ├── index.d.ts
+        └── supporting modules
+               ↓ published package
                ├── npm consumers
                ├── packages/cli/src
                │         ↓ esbuild
@@ -78,19 +88,20 @@ Public query functions return copies so consumers cannot mutate the internal
 source of truth. Dataset provenance and boundary conventions are recorded in
 [DATA-SOURCES.md](./DATA-SOURCES.md).
 
-Date-only parsing and calendar arithmetic live in `date-utils.js`. Public date
+Date-only parsing and calendar arithmetic live in `date-utils.ts`. Public date
 APIs accept ISO dates or `Date` instances, convert them to local-calendar ISO
 dates at the boundary, and perform elapsed-day arithmetic in UTC. This avoids
 daylight-saving transitions changing date-only results.
 
-`stats.js` derives deterministic statistics from completed pontificates only.
+`stats.ts` derives deterministic statistics from completed pontificates only.
 It returns copies of both records and duration objects, preserving internal
 dataset immutability.
 
 GitHub Actions validates the project on Node.js 22, 24, and 26 for pushes and
 pull requests targeting `main`. The workflow installs from the committed
-lockfile, runs tests and coverage checks, smoke-tests the CLI, builds the Chrome
-extension, and inspects the npm package artifact.
+lockfile, compiles and type-checks the core, runs tests and coverage checks,
+smoke-tests the CLI, builds the Chrome extension, and inspects the npm package
+artifact.
 
 ## Evolution direction
 
@@ -110,12 +121,16 @@ The core now uses the following internal structure:
 ```text
 packages/
 ├── core/
-│   └── src/
-│       ├── data/
-│       ├── dates.js
-│       ├── popes.js
-│       ├── stats.js
-│       └── index.js
+│   ├── src/
+│   │   ├── data/
+│   │   ├── dates.ts
+│   │   ├── popes.ts
+│   │   ├── stats.ts
+│   │   ├── types.ts
+│   │   └── index.ts
+│   ├── type-tests/
+│   ├── build.mjs
+│   └── tsconfig.json
 ├── cli/
 │   ├── src/
 │   ├── tests/
@@ -144,7 +159,9 @@ packages/
 The following changes are intentional, but do not belong to the baseline:
 
 1. Expand the sourced dataset beyond Paul VI when needed.
-2. Migrate the core to TypeScript and publish library artifacts from `dist`.
+2. Add a restrictive package `exports` map only after deciding whether deep
+   imports need a compatibility period.
+3. Declare a Node.js engine range alongside an explicit support policy.
 
 Each decision should be implemented as a small delivery accompanied by tests
 and an update to this documentation.
