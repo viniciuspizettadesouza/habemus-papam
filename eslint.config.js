@@ -8,6 +8,7 @@ export default typescriptEslint.config(
       "**/coverage/**",
       "**/dist/**",
       "**/node_modules/**",
+      "site/**",
       "*.tgz",
       "*.zip",
     ],

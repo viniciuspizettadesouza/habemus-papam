@@ -23,6 +23,11 @@ function validateDate(date: Date): void {
   }
 }
 
+/**
+ * Checks whether a local calendar date is the current pope's exact election day.
+ *
+ * @param date - Valid Date instance; defaults to now.
+ */
 export function isElectionDay(date: Date = new Date()): boolean {
   validateDate(date);
 
@@ -33,6 +38,13 @@ export function isElectionDay(date: Date = new Date()): boolean {
   );
 }
 
+/**
+ * Checks whether a local calendar date is an election anniversary.
+ *
+ * Dates before the original election are not anniversaries.
+ *
+ * @param date - Valid Date instance; defaults to now.
+ */
 export function isElectionAnniversary(date: Date = new Date()): boolean {
   validateDate(date);
 
@@ -72,6 +84,14 @@ function validatePope(pope: unknown): asserts pope is PontificateInput {
   }
 }
 
+/**
+ * Calculates calendar and elapsed-day pontificate duration.
+ *
+ * Completed pontificates stop at their recorded end date.
+ *
+ * @param pope - Pope election boundaries; defaults to the current pope.
+ * @param date - Reference date; defaults to today.
+ */
 export function getPontificateDuration(
   pope: Readonly<PontificateInput> = currentPope,
   date: DateInput = new Date(),
@@ -91,6 +111,12 @@ export function getPontificateDuration(
   return calendarDifference(pope.elected, endDate);
 }
 
+/**
+ * Returns age in completed calendar years.
+ *
+ * @param pope - Pope record with a birth date; defaults to the current pope.
+ * @param date - Reference date; defaults to today.
+ */
 export function getPopeAge(
   pope: Readonly<PopeAgeInput> = currentPope,
   date: DateInput = new Date(),
@@ -111,6 +137,13 @@ export function getPopeAge(
   return calendarDifference(birthDate, referenceDate).years;
 }
 
+/**
+ * Returns the first election anniversary strictly after the reference date.
+ *
+ * @param pope - Pope election boundaries; defaults to the current pope.
+ * @param date - Reference date; defaults to today.
+ * @returns An ISO date in YYYY-MM-DD format.
+ */
 export function getNextElectionAnniversary(
   pope: Readonly<PontificateInput> = currentPope,
   date: DateInput = new Date(),
@@ -138,6 +171,14 @@ export function getNextElectionAnniversary(
   return anniversary;
 }
 
+/**
+ * Returns elapsed calendar days since election, starting at zero.
+ *
+ * This calculation does not stop at the end of a completed pontificate.
+ *
+ * @param pope - Pope election boundaries; defaults to the current pope.
+ * @param date - Reference date; defaults to today.
+ */
 export function daysSinceElection(
   pope: Readonly<PontificateInput> = currentPope,
   date: DateInput = new Date(),

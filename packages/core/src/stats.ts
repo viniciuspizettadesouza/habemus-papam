@@ -25,6 +25,7 @@ function cloneResult(result: PontificateResult): PontificateResult {
   };
 }
 
+/** Returns the longest completed pontificate in the bundled dataset. */
 export function getLongestPontificate(): PontificateResult {
   const result = getCompletedPontificates().reduce((longest, candidate) =>
     candidate.duration.totalDays > longest.duration.totalDays
@@ -35,6 +36,7 @@ export function getLongestPontificate(): PontificateResult {
   return cloneResult(result);
 }
 
+/** Returns the shortest completed pontificate in the bundled dataset. */
 export function getShortestPontificate(): PontificateResult {
   const result = getCompletedPontificates().reduce((shortest, candidate) =>
     candidate.duration.totalDays < shortest.duration.totalDays
@@ -45,6 +47,7 @@ export function getShortestPontificate(): PontificateResult {
   return cloneResult(result);
 }
 
+/** Returns rounded mean days and sample size for completed pontificates. */
 export function getAveragePontificateDuration(): AveragePontificateDuration {
   const completed = getCompletedPontificates();
   const totalDays = completed.reduce(

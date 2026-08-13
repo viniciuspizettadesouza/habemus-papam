@@ -21,18 +21,29 @@ function normalizeName(value: string): string {
     .trim();
 }
 
+/** Returns a mutable copy of the current pope record. */
 export function getCurrentPope(): Pope {
   return { ...currentPope };
 }
 
+/** Returns a mutable copy of the pope immediately before the current pope. */
 export function getPreviousPope(): Pope {
   return { ...(popes[1] as Readonly<Pope>) };
 }
 
+/** Returns mutable record copies in reverse chronological order. */
 export function listPopes(): Pope[] {
   return popes.map((pope) => ({ ...pope }));
 }
 
+/**
+ * Finds a pope by ID, papal name, or birth name.
+ *
+ * Matching is case-insensitive and ignores titles, punctuation, and diacritics.
+ *
+ * @param name - Non-empty name or record ID.
+ * @returns A mutable record copy, or null when no record matches.
+ */
 export function getPopeByName(name: string): Pope | null {
   const query = normalizeName(name);
   const pope = popes.find((candidate) => {
@@ -43,6 +54,12 @@ export function getPopeByName(name: string): Pope | null {
   return clonePope(pope);
 }
 
+/**
+ * Finds the pope serving on an inclusive pontificate date.
+ *
+ * @param date - ISO calendar date or Date using its local calendar fields.
+ * @returns A mutable record copy, or null outside known pontificates.
+ */
 export function getPopeByDate(date: DateInput): Pope | null {
   const query = toIsoDate(date);
   const pope = popes.find(

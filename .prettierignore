@@ -1,6 +1,7 @@
 **/coverage/
 **/dist/
 **/node_modules/
+site/
 *.tgz
 *.zip
 pnpm-lock.yaml

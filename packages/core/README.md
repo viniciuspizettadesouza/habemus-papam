@@ -1,35 +1,81 @@
 # habemus-papam
 
-A cross-platform JavaScript tool that provides information about the current Pope of the Catholic Church. This is the reusable library package; the separately maintained CLI is bundled into this package for `npx` compatibility.
+Papal information for JavaScript and the command line.
 
-## ✝️ About "Habemus Papam"
+[![npm version](https://img.shields.io/npm/v/habemus-papam?color=blue)](https://www.npmjs.com/package/habemus-papam) [![CI](https://github.com/viniciuspizettadesouza/habemus-papam/actions/workflows/ci.yml/badge.svg)](https://github.com/viniciuspizettadesouza/habemus-papam/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/habemus-papam)](LICENSE)
 
-"Habemus Papam" means "We have a Pope."
-It is the traditional announcement by the Cardinal Protodeacon from St. Peter's Basilica, marking the election of a new pope — a ritual dating back to the 15th century symbolizing continuity in the Catholic Church.
+“Habemus Papam” means “We have a pope.” This package provides a sourced modern
+papal dataset, date calculations, pontificate statistics, and a CLI for quickly
+reading the same information in a terminal.
 
-## 📦 Install
+## Features
+
+- Current, previous, name-based, and date-based pope queries
+- Sourced records from Paul VI through Leo XIV
+- Pontificate duration, age, elapsed-day, and anniversary calculations
+- Longest, shortest, and average completed-pontificate statistics
+- Human-readable and JSON command-line output
+- ESM JavaScript with bundled TypeScript declarations
+
+## Install
 
 ```bash
-pnpm add habemus-papam
-# or
 npm install habemus-papam
 ```
 
-## 🖥️ CLI Usage
+Node.js 22 or newer is required.
+
+## Quick start
+
+```js
+import {
+  getCurrentPope,
+  getPopeByDate,
+  getPontificateDuration,
+} from "habemus-papam";
+
+const current = getCurrentPope();
+
+console.log(current.name); // "Pope Leo XIV"
+console.log(getPopeByDate("2015-01-01")?.name); // "Pope Francis"
+console.log(getPontificateDuration(current, "2026-05-08"));
+// { years: 1, months: 0, days: 0, totalDays: 365 }
+```
+
+Returned pope records are copies, so changing one does not mutate the bundled
+dataset.
+
+## Library API
+
+| Area            | Functions                                                                                 |
+| --------------- | ----------------------------------------------------------------------------------------- |
+| Pope queries    | `getCurrentPope`, `getPreviousPope`, `listPopes`, `getPopeByName`, `getPopeByDate`        |
+| Dates           | `getPontificateDuration`, `getPopeAge`, `getNextElectionAnniversary`, `daysSinceElection` |
+| Election checks | `isElectionDay`, `isElectionAnniversary`                                                  |
+| Statistics      | `getLongestPontificate`, `getShortestPontificate`, `getAveragePontificateDuration`        |
+
+Date calculations accept valid `Date` instances or ISO calendar dates in
+`YYYY-MM-DD` format where documented. Searches return `null` when no known pope
+matches. Invalid inputs throw `TypeError` or `RangeError`; consult the API
+reference for each function's exact contract.
+
+The deprecated `isElectionDayToday()` export remains available for backward
+compatibility. New code should use `isElectionDay()`.
+
+## CLI
+
+Run the package without installing it globally:
 
 ```bash
 npx habemus-papam
 ```
 
-Output:
-
-```
+```text
 Habemus Papam!
 Pope Leo XIV (Robert Francis Prevost) was elected on 2025-05-08.
-Today is the election day of the current pope!
 ```
 
-The no-argument command remains backward-compatible. Additional commands:
+Available commands:
 
 ```bash
 npx habemus-papam current
@@ -41,94 +87,34 @@ npx habemus-papam anniversary
 npx habemus-papam --help
 ```
 
-Add `--json` to any data command for machine-readable output:
+Add `--json` to a data command for machine-readable output:
 
 ```bash
-npx habemus-papam --json | jq '.name'
+npx habemus-papam current --json
 npx habemus-papam history --json
 ```
 
 Invalid commands, options, and pope names write an error to standard error and
 set a non-zero exit code.
 
-The package ships its own TypeScript declarations, so TypeScript consumers do
-not need to install a separate `@types` package.
+## Compatibility
 
-Node.js 22 or newer is required. The package exposes its documented API only
-through the root `habemus-papam` entry point.
+- Node.js 22 or newer
+- ESM only
+- TypeScript declarations included
+- Public imports are available only from `habemus-papam`; internal files are not
+  exported
 
-## 📚 Usage as a Library
+## Documentation
 
-```js
-import {
-  daysSinceElection,
-  getAveragePontificateDuration,
-  getCurrentPope,
-  getLongestPontificate,
-  getNextElectionAnniversary,
-  getPopeByDate,
-  getPopeByName,
-  getPopeAge,
-  getPontificateDuration,
-  getPreviousPope,
-  getShortestPontificate,
-  listPopes,
-  isElectionAnniversary,
-  isElectionDay,
-} from "habemus-papam";
+- [Generated API documentation](https://viniciuspizettadesouza.github.io/habemus-papam/)
+- [Detailed API guide](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/docs/API.md)
+- [Papal data sources](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/docs/DATA-SOURCES.md)
+- [Project repository](https://github.com/viniciuspizettadesouza/habemus-papam)
 
-console.log(getCurrentPope());
-console.log(getPopeByName("Francis"));
-console.log(getPopeByDate("2015-01-01"));
-console.log(getPreviousPope());
-console.log(listPopes());
-console.log(getPontificateDuration());
-console.log(getPopeAge());
-console.log(getNextElectionAnniversary());
-console.log(daysSinceElection());
-console.log(getLongestPontificate());
-console.log(getShortestPontificate());
-console.log(getAveragePontificateDuration());
-console.log(isElectionDay());
-console.log(isElectionAnniversary());
-```
+The project also provides a [Chrome extension](https://chromewebstore.google.com/detail/habemus-papam/ccmjegfeapjehgfmdckmmllgpblojboi)
+built from the same papal data and date rules.
 
-Pope records contain `id`, `name`, `birthName`, `birthDate`, `elected`, and
-`pontificateEnd`. `listPopes()` returns the six bundled records in reverse
-chronological order. Name searches are case-insensitive and accept a papal
-name, record ID, or birth name. Date searches accept an ISO date string or a
-`Date` and return `null` during a vacant see or outside the available history.
+## License
 
-Date calculations default to the current pope and today, or accept a pope
-record and a `Date` or ISO date string. `getPontificateDuration()` returns
-calendar `years`, `months`, and `days` plus `totalDays`; completed pontificates
-stop at their recorded end date. `getPopeAge()` returns completed years,
-`getNextElectionAnniversary()` returns the first anniversary strictly after the
-reference date, and `daysSinceElection()` returns elapsed calendar days.
-
-Pontificate statistics use completed records only, keeping results stable while
-the current pontificate is ongoing. The longest and shortest functions return
-the pope and full duration. The average returns rounded `averageDays` and the
-completed `sampleSize`.
-
-See the repository's [papal data sources](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/docs/DATA-SOURCES.md)
-for the dataset provenance and date conventions.
-
-`isElectionDay()` matches May 8, 2025 only. `isElectionAnniversary()` matches
-May 8 from 2025 onward. Both accept an optional `Date` and use its local
-calendar date. The original `isElectionDayToday()` export remains available as
-a deprecated alias.
-
-## 🧩 Chrome Extension
-
-This package is part of a monorepo that also includes a browser extension.  
-🧩 [View on Chrome Web Store](https://chromewebstore.google.com/detail/habemus-papam/ccmjegfeapjehgfmdckmmllgpblojboi)
-
-## 👤 Author
-
-Vinicius Souza  
-[https://github.com/viniciuspizettadesouza](https://github.com/viniciuspizettadesouza)
-
-## 📄 License
-
-Licensed under the [MIT License](https://github.com/viniciuspizettadesouza/habemus-papam/blob/main/license.md).
+[MIT](LICENSE) © Vinicius Souza

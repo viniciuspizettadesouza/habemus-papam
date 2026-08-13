@@ -13,12 +13,15 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release-packages": "changeset publish",
+    "release:status": "node scripts/release-status.mjs",
+    "release:publish": "node scripts/publish-release.mjs",
     "build:core": "pnpm --filter habemus-papam build",
     "build:cli": "pnpm --filter @habemus-papam/cli build",
     "start:cli": "pnpm --filter @habemus-papam/cli start",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "docs:api": "typedoc --options typedoc.json",
     "typecheck": "pnpm --filter habemus-papam typecheck",
     "test:package": "pnpm --filter habemus-papam test:package",
     "test": "pnpm build:core && pnpm typecheck && pnpm -r --if-present test",
@@ -31,6 +34,7 @@
     "eslint": "^10.8.1",
     "globals": "^17.11.0",
     "prettier": "^3.9.6",
+    "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0"
   }
