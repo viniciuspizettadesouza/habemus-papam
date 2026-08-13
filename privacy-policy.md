@@ -9,9 +9,11 @@ The **Habemus Papam** Chrome extension and npm package do **not collect, store, 
 - No data is transmitted, logged, or sent to any server.
 
 ### Chrome Extension
+
 The Chrome extension runs entirely in the browser and does not require any permissions or internet access. It simply displays static information about the current pope, including name and election date.
 
 ### npm Package
+
 The npm package version of **Habemus Papam** provides the same information via local JavaScript utilities. It contains no networking code and has no dependencies that collect data.
 
 We respect your privacy by design. No information leaves your device.

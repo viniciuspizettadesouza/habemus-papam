@@ -119,9 +119,7 @@ describe("getPopeByDate", () => {
 
 describe("getPontificateDuration", () => {
   it("returns calendar parts and total elapsed days", () => {
-    expect(
-      getPontificateDuration(getCurrentPope(), "2026-08-08"),
-    ).toEqual({
+    expect(getPontificateDuration(getCurrentPope(), "2026-08-08")).toEqual({
       years: 1,
       months: 3,
       days: 0,
@@ -154,9 +152,7 @@ describe("getPontificateDuration", () => {
     expect(() =>
       getPontificateDuration(getCurrentPope(), "2025-05-07"),
     ).toThrow(RangeError);
-    expect(() => getPontificateDuration(null, "2025-05-08")).toThrow(
-      TypeError,
-    );
+    expect(() => getPontificateDuration(null, "2025-05-08")).toThrow(TypeError);
     expect(() =>
       getPontificateDuration(
         { elected: "2025-05-08", pontificateEnd: "invalid" },
@@ -195,10 +191,7 @@ describe("getPopeAge", () => {
       RangeError,
     );
     expect(() =>
-      getPopeAge(
-        { elected: "2025-05-08", pontificateEnd: null },
-        "2025-05-08",
-      ),
+      getPopeAge({ elected: "2025-05-08", pontificateEnd: null }, "2025-05-08"),
     ).toThrow(TypeError);
   });
 });

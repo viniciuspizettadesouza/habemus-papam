@@ -189,7 +189,9 @@ await writeFile(new URL("cli-output.json", import.meta.url), output);
   );
   await assertExists(executable);
 
-  await execute(process.execPath, [join(temporaryDirectory, "cli-consumer.mjs")]);
+  await execute(process.execPath, [
+    join(temporaryDirectory, "cli-consumer.mjs"),
+  ]);
   const cliOutput = JSON.parse(
     await readFile(join(temporaryDirectory, "cli-output.json"), "utf8"),
   );

@@ -93,8 +93,11 @@ allowlist. The temporary consumer is removed after the check.
 The same checks run in CI and must pass before publishing:
 
 ```bash
+pnpm lint
+pnpm format:check
 pnpm test
 pnpm test:coverage
+pnpm test:package
 ```
 
 ## 5. Publish

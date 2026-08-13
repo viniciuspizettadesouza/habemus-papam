@@ -2,6 +2,7 @@
   "name": "habemus-papam",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "build:extension": "pnpm --filter @habemus-papam/extension build",
     "zip-extension": "pnpm build:extension && cd packages/extension/dist && zip -FSr ../../../habemus-papam-extension.zip .",
@@ -15,6 +16,9 @@
     "build:core": "pnpm --filter habemus-papam build",
     "build:cli": "pnpm --filter @habemus-papam/cli build",
     "start:cli": "pnpm --filter @habemus-papam/cli start",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "pnpm --filter habemus-papam typecheck",
     "test:package": "pnpm --filter habemus-papam test:package",
     "test": "pnpm build:core && pnpm typecheck && pnpm -r --if-present test",
@@ -22,6 +26,12 @@
   },
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
-    "@changesets/cli": "^2.29.4"
+    "@changesets/cli": "^2.29.4",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.1",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0"
   }
 }

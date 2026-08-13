@@ -18,6 +18,9 @@ pnpm-debug.log*
 # Chrome extension build artifacts
 *.zip
 
+# npm package artifacts
+*.tgz
+
 # TypeScript
 *.tsbuildinfo
 

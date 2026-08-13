@@ -79,11 +79,11 @@ import {
   listPopes,
   isElectionAnniversary,
   isElectionDay,
-} from 'habemus-papam';
+} from "habemus-papam";
 
 console.log(getCurrentPope());
-console.log(getPopeByName('Francis'));
-console.log(getPopeByDate('2015-01-01'));
+console.log(getPopeByName("Francis"));
+console.log(getPopeByDate("2015-01-01"));
 console.log(getPreviousPope());
 console.log(listPopes());
 console.log(getPontificateDuration());
@@ -169,6 +169,19 @@ Run the tests:
 ```bash
 pnpm test
 pnpm test:coverage
+```
+
+Check linting and formatting:
+
+```bash
+pnpm run lint
+pnpm run format:check
+```
+
+Apply the repository formatting rules:
+
+```bash
+pnpm run format
 ```
 
 Build and type-check the core package:

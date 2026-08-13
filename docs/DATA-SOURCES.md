@@ -6,14 +6,14 @@ published by the Holy See.
 
 ## Sources by record
 
-| Pope | Primary source |
-| --- | --- |
-| Leo XIV | [Biography of the Holy Father Leo XIV](https://www.vatican.va/content/leo-xiv/en/biography/documents/biografia_leone-xiv.html) |
-| Francis | [Biography of the Holy Father Francis](https://www.vatican.va/content/francesco/en/biography/documents/papa-francesco-biografia-bergoglio.html) |
+| Pope         | Primary source                                                                                                                                                                                                                                |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Leo XIV      | [Biography of the Holy Father Leo XIV](https://www.vatican.va/content/leo-xiv/en/biography/documents/biografia_leone-xiv.html)                                                                                                                |
+| Francis      | [Biography of the Holy Father Francis](https://www.vatican.va/content/francesco/en/biography/documents/papa-francesco-biografia-bergoglio.html)                                                                                               |
 | Benedict XVI | [Official biography index](https://www.vatican.va/content/benedict-xvi/en/biography.index.html) and [biographical notes](https://www.vatican.va/content/benedict-xvi/en/biography/documents/hf_ben-xvi_bio_20050419_short-biography_old.html) |
-| John Paul II | [Biographical profile of John Paul II](https://www.vatican.va/content/john-paul-ii/en/biografia/documents/hf_jp-ii_spe_20190722_biografia.html) |
-| John Paul I | [Biography of John Paul I](https://www.vatican.va/content/john-paul-i/en/biography/documents/hf_jp-i_bio_01021997_biography.html) |
-| Paul VI | [Biographical profile of Paul VI](https://www.vatican.va/content/paul-vi/en/biografia/documents/hf_p-vi_spe_20190722_biografia.html) |
+| John Paul II | [Biographical profile of John Paul II](https://www.vatican.va/content/john-paul-ii/en/biografia/documents/hf_jp-ii_spe_20190722_biografia.html)                                                                                               |
+| John Paul I  | [Biography of John Paul I](https://www.vatican.va/content/john-paul-i/en/biography/documents/hf_jp-i_bio_01021997_biography.html)                                                                                                             |
+| Paul VI      | [Biographical profile of Paul VI](https://www.vatican.va/content/paul-vi/en/biografia/documents/hf_p-vi_spe_20190722_biografia.html)                                                                                                          |
 
 ## Data conventions
 

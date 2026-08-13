@@ -30,17 +30,13 @@ const previous: Pope = getPreviousPope();
 const history: Pope[] = listPopes();
 const byName: Pope | null = getPopeByName("Francis");
 const byDate: Pope | null = getPopeByDate(date);
-const duration: PontificateDuration = getPontificateDuration(
-  pontificate,
-  date,
-);
+const duration: PontificateDuration = getPontificateDuration(pontificate, date);
 const age: number = getPopeAge(popeWithBirthDate, date);
 const anniversary: string = getNextElectionAnniversary(current, date);
 const elapsedDays: number = daysSinceElection(current, date);
 const longest: PontificateResult = getLongestPontificate();
 const shortest: PontificateResult = getShortestPontificate();
-const average: AveragePontificateDuration =
-  getAveragePontificateDuration();
+const average: AveragePontificateDuration = getAveragePontificateDuration();
 const electionDay: boolean = isElectionDay(new Date());
 const electionAnniversary: boolean = isElectionAnniversary(new Date());
 

@@ -117,7 +117,12 @@ function runPrevious(json, now) {
   const pope = getPreviousPope();
   const duration = getPontificateDuration(pope, now);
   return success(
-    render(json ? { ...pope, pontificateDuration: duration } : formatPope(pope, duration), json),
+    render(
+      json
+        ? { ...pope, pontificateDuration: duration }
+        : formatPope(pope, duration),
+      json,
+    ),
   );
 }
 
@@ -151,7 +156,12 @@ function runPope(nameParts, json, now) {
 
   const duration = getPontificateDuration(pope, now);
   return success(
-    render(json ? { ...pope, pontificateDuration: duration } : formatPope(pope, duration), json),
+    render(
+      json
+        ? { ...pope, pontificateDuration: duration }
+        : formatPope(pope, duration),
+      json,
+    ),
   );
 }
 

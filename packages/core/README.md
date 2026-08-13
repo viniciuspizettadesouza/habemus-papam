@@ -22,6 +22,7 @@ npx habemus-papam
 ```
 
 Output:
+
 ```
 Habemus Papam!
 Pope Leo XIV (Robert Francis Prevost) was elected on 2025-05-08.
@@ -74,11 +75,11 @@ import {
   listPopes,
   isElectionAnniversary,
   isElectionDay,
-} from 'habemus-papam';
+} from "habemus-papam";
 
 console.log(getCurrentPope());
-console.log(getPopeByName('Francis'));
-console.log(getPopeByDate('2015-01-01'));
+console.log(getPopeByName("Francis"));
+console.log(getPopeByDate("2015-01-01"));
 console.log(getPreviousPope());
 console.log(listPopes());
 console.log(getPontificateDuration());
@@ -127,7 +128,6 @@ This package is part of a monorepo that also includes a browser extension.
 
 Vinicius Souza  
 [https://github.com/viniciuspizettadesouza](https://github.com/viniciuspizettadesouza)
-
 
 ## 📄 License
 

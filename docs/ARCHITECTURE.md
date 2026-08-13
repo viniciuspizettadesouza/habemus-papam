@@ -104,9 +104,9 @@ dataset immutability.
 
 GitHub Actions validates the project on Node.js 22, 24, and 26 for pushes and
 pull requests targeting `main`. The workflow installs from the committed
-lockfile, compiles and type-checks the core, runs tests and coverage checks,
-smoke-tests the CLI, builds the Chrome extension, and inspects the npm package
-artifact through an isolated installed consumer.
+lockfile, checks linting and formatting, compiles and type-checks the core, runs
+tests and coverage checks, smoke-tests the CLI, builds the Chrome extension,
+and inspects the npm package artifact through an isolated installed consumer.
 
 The package integration test creates the same tarball used for publication. It
 validates JavaScript and TypeScript imports, the installed CLI, package exports,
