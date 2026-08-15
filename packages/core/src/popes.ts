@@ -11,14 +11,20 @@ function normalizeName(value: string): string {
     throw new TypeError("Expected a non-empty pope name.");
   }
 
-  return value
+  const normalized = value
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .replace(/[łŁ]/g, "l")
     .toLowerCase()
-    .replace(/^pope\s+/, "")
     .replace(/[^a-z0-9]+/g, " ")
-    .trim();
+    .trim()
+    .replace(/^(?:(?:his holiness|holy father|pope|saint|st)(?:\s+|$))+/, "");
+
+  if (normalized === "") {
+    throw new TypeError("Expected a pope name containing letters or numbers.");
+  }
+
+  return normalized;
 }
 
 /** Returns a mutable copy of the current pope record. */

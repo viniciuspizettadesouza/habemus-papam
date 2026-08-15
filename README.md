@@ -59,14 +59,17 @@ The original command remains available:
 npx habemus-papam
 ```
 
-Additional commands support current and previous popes, history, name lookup, anniversaries, and JSON output:
+Additional commands support current and previous popes, history, name and date
+lookup, anniversaries, completed-pontificate statistics, and JSON output:
 
 ```bash
 npx habemus-papam current
 npx habemus-papam previous
 npx habemus-papam history
 npx habemus-papam pope francis
+npx habemus-papam date 2015-01-01
 npx habemus-papam anniversary
+npx habemus-papam stats
 npx habemus-papam --json
 npx habemus-papam --help
 ```
@@ -76,7 +79,7 @@ options, and pope names write to standard error and set a non-zero exit code.
 
 ## Chrome extension
 
-The [Chrome extension](https://chromewebstore.google.com/detail/habemus-papam/ccmjegfeapjehgfmdckmmllgpblojboi) uses the same core package and contains no duplicated papal data or date rules.
+The [Chrome extension](https://chromewebstore.google.com/detail/habemus-papam/ccmjegfeapjehgfmdckmmllgpblojboi) uses the same core package and contains no duplicated papal data or date rules. Its popup shows the current pope's age, pontificate duration, next election anniversary, and recent papal history.
 
 ## Documentation
 

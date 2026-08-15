@@ -124,10 +124,12 @@ let output = "";
 console.log = (value) => {
   output += String(value);
 };
-process.argv = [process.execPath, "habemus-papam", "--json"];
+const cliArguments = JSON.parse(process.env.CLI_ARGUMENTS ?? '["--json"]');
+const outputFile = process.env.CLI_OUTPUT_FILE ?? "cli-output.json";
+process.argv = [process.execPath, "habemus-papam", ...cliArguments];
 
 await import("./node_modules/habemus-papam/bin/cli.js");
-await writeFile(new URL("cli-output.json", import.meta.url), output);
+await writeFile(new URL(outputFile, import.meta.url), output);
 `,
   );
   await writeFile(
@@ -188,6 +190,47 @@ await writeFile(new URL("cli-output.json", import.meta.url), output);
     process.platform === "win32" ? "habemus-papam.cmd" : "habemus-papam",
   );
   await assertExists(executable);
+
+  await execute(
+    process.execPath,
+    [join(temporaryDirectory, "cli-consumer.mjs")],
+    {
+      env: {
+        ...isolatedEnvironment,
+        CLI_ARGUMENTS: JSON.stringify(["date", "2015-01-01", "--json"]),
+        CLI_OUTPUT_FILE: "date-cli-output.json",
+      },
+    },
+  );
+  const dateOutput = JSON.parse(
+    await readFile(join(temporaryDirectory, "date-cli-output.json"), "utf8"),
+  );
+
+  if (dateOutput.pope.id !== "francis") {
+    throw new Error("The installed CLI date lookup returned unexpected data.");
+  }
+
+  await execute(
+    process.execPath,
+    [join(temporaryDirectory, "cli-consumer.mjs")],
+    {
+      env: {
+        ...isolatedEnvironment,
+        CLI_ARGUMENTS: JSON.stringify(["stats", "--json"]),
+        CLI_OUTPUT_FILE: "stats-cli-output.json",
+      },
+    },
+  );
+  const statsOutput = JSON.parse(
+    await readFile(join(temporaryDirectory, "stats-cli-output.json"), "utf8"),
+  );
+
+  if (
+    statsOutput.longest.pope.id !== "john-paul-ii" ||
+    statsOutput.average.sampleSize !== 5
+  ) {
+    throw new Error("The installed CLI statistics returned unexpected data.");
+  }
 
   await execute(process.execPath, [
     join(temporaryDirectory, "cli-consumer.mjs"),

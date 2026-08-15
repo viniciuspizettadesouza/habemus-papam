@@ -83,7 +83,9 @@ npx habemus-papam previous
 npx habemus-papam history
 npx habemus-papam pope francis
 npx habemus-papam pope "John Paul II"
+npx habemus-papam date 2015-01-01
 npx habemus-papam anniversary
+npx habemus-papam stats
 npx habemus-papam --help
 ```
 

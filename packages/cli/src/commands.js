@@ -1,11 +1,15 @@
 import {
   daysSinceElection,
+  getAveragePontificateDuration,
   getCurrentPope,
+  getLongestPontificate,
   getNextElectionAnniversary,
   getPopeAge,
+  getPopeByDate,
   getPopeByName,
   getPontificateDuration,
   getPreviousPope,
+  getShortestPontificate,
   isElectionDay,
   listPopes,
 } from "habemus-papam";
@@ -17,7 +21,9 @@ Commands:
   previous             Show the previous pope
   history              List the bundled pope history
   pope <name>          Find a pope by papal name, ID, or birth name
+  date <YYYY-MM-DD>    Find the pope serving on a date
   anniversary          Show the next election anniversary
+  stats                Show completed-pontificate statistics
   help                 Show this help message
 
 Options:
@@ -165,6 +171,29 @@ function runPope(nameParts, json, now) {
   );
 }
 
+function runDate(dateParts, json) {
+  if (dateParts.length !== 1) {
+    return failure("The date command requires one YYYY-MM-DD date.", json);
+  }
+
+  const [date] = dateParts;
+  const pope = getPopeByDate(date);
+
+  if (pope === null) {
+    return failure(`No pope found serving on ${date}.`, json);
+  }
+
+  const pontificateDuration = getPontificateDuration(pope, date);
+  return success(
+    render(
+      json
+        ? { date, pope: { ...pope, pontificateDuration } }
+        : `Serving on ${date}:\n${formatPope(pope, pontificateDuration)}`,
+      json,
+    ),
+  );
+}
+
 function runAnniversary(json, now) {
   const pope = getCurrentPope();
   const nextElectionAnniversary = getNextElectionAnniversary(pope, now);
@@ -182,6 +211,33 @@ function runAnniversary(json, now) {
       json,
     ),
   );
+}
+
+function runStats(json) {
+  const payload = {
+    longest: getLongestPontificate(),
+    shortest: getShortestPontificate(),
+    average: getAveragePontificateDuration(),
+  };
+
+  return success(
+    render(
+      json
+        ? payload
+        : [
+            `Longest: ${payload.longest.pope.name} (${formatDuration(payload.longest.duration)})`,
+            `Shortest: ${payload.shortest.pope.name} (${formatDuration(payload.shortest.duration)})`,
+            `Average: ${pluralize(payload.average.averageDays, "day")} across ${payload.average.sampleSize} completed pontificates`,
+          ].join("\n"),
+      json,
+    ),
+  );
+}
+
+function rejectUnexpectedArguments(command, commandArgs, json) {
+  return commandArgs.length > 0
+    ? failure(`The ${command} command does not accept arguments.`, json)
+    : null;
 }
 
 export function runCli(args = [], { now = new Date() } = {}) {
@@ -203,22 +259,52 @@ export function runCli(args = [], { now = new Date() } = {}) {
   const positional = args.filter((argument) => !argument.startsWith("-"));
   const [command, ...commandArgs] = positional;
 
-  switch (command) {
-    case undefined:
-      return runDefault(json, now);
-    case "current":
-      return runCurrent(json, now);
-    case "previous":
-      return runPrevious(json, now);
-    case "history":
-      return runHistory(json);
-    case "pope":
-      return runPope(commandArgs, json, now);
-    case "anniversary":
-      return runAnniversary(json, now);
-    case "help":
-      return success(USAGE);
-    default:
-      return failure(`Unknown command: ${command}`, json);
+  try {
+    switch (command) {
+      case undefined:
+        return runDefault(json, now);
+      case "current":
+        return (
+          rejectUnexpectedArguments(command, commandArgs, json) ??
+          runCurrent(json, now)
+        );
+      case "previous":
+        return (
+          rejectUnexpectedArguments(command, commandArgs, json) ??
+          runPrevious(json, now)
+        );
+      case "history":
+        return (
+          rejectUnexpectedArguments(command, commandArgs, json) ??
+          runHistory(json)
+        );
+      case "pope":
+        return runPope(commandArgs, json, now);
+      case "date":
+        return runDate(commandArgs, json);
+      case "anniversary":
+        return (
+          rejectUnexpectedArguments(command, commandArgs, json) ??
+          runAnniversary(json, now)
+        );
+      case "stats":
+        return (
+          rejectUnexpectedArguments(command, commandArgs, json) ??
+          runStats(json)
+        );
+      case "help":
+        return (
+          rejectUnexpectedArguments(command, commandArgs, json) ??
+          success(USAGE)
+        );
+      default:
+        return failure(`Unknown command: ${command}`, json);
+    }
+  } catch (error) {
+    if (error instanceof TypeError || error instanceof RangeError) {
+      return failure(error.message, json);
+    }
+
+    throw error;
   }
 }

@@ -76,12 +76,20 @@ describe("getPopeByName", () => {
     expect(getPopeByName("Karol Jozef Wojtyla")?.id).toBe("john-paul-ii");
   });
 
+  it("ignores common papal and saint titles", () => {
+    expect(getPopeByName("His Holiness Pope Francis")?.id).toBe("francis");
+    expect(getPopeByName("Holy Father Francis")?.id).toBe("francis");
+    expect(getPopeByName("Pope Saint John Paul II")?.id).toBe("john-paul-ii");
+  });
+
   it("returns null when no pope matches", () => {
     expect(getPopeByName("Unknown")).toBeNull();
   });
 
   it("rejects an empty or non-string name", () => {
     expect(() => getPopeByName(" ")).toThrow(TypeError);
+    expect(() => getPopeByName("---")).toThrow(TypeError);
+    expect(() => getPopeByName("Pope")).toThrow(TypeError);
     expect(() => getPopeByName(null)).toThrow(TypeError);
   });
 });
@@ -114,6 +122,10 @@ describe("getPopeByDate", () => {
     expect(() => getPopeByDate("2025-02-30")).toThrow(TypeError);
     expect(() => getPopeByDate(new Date("invalid"))).toThrow(TypeError);
     expect(() => getPopeByDate(20250508)).toThrow(TypeError);
+
+    const fiveDigitYear = new Date(0);
+    fiveDigitYear.setFullYear(10000, 0, 1);
+    expect(() => getPopeByDate(fiveDigitYear)).toThrow(TypeError);
   });
 });
 
@@ -166,6 +178,21 @@ describe("getPontificateDuration", () => {
       ),
     ).toThrow(RangeError);
   });
+
+  it("handles years from 0000 through 0099 without Date.UTC remapping", () => {
+    expect(
+      getPontificateDuration(
+        { elected: "0099-12-31", pontificateEnd: null },
+        "0100-01-01",
+      ),
+    ).toEqual({ years: 0, months: 0, days: 1, totalDays: 1 });
+    expect(
+      getPontificateDuration(
+        { elected: "0000-02-28", pontificateEnd: null },
+        "0000-03-01",
+      ).totalDays,
+    ).toBe(2);
+  });
 });
 
 describe("getPopeAge", () => {
@@ -193,6 +220,16 @@ describe("getPopeAge", () => {
     expect(() =>
       getPopeAge({ elected: "2025-05-08", pontificateEnd: null }, "2025-05-08"),
     ).toThrow(TypeError);
+    expect(() =>
+      getPopeAge(
+        {
+          elected: "2000-01-01",
+          pontificateEnd: null,
+          birthDate: "2010-01-01",
+        },
+        "2020-01-01",
+      ),
+    ).toThrow(RangeError);
   });
 });
 
@@ -214,6 +251,29 @@ describe("getNextElectionAnniversary", () => {
       "2025-05-08",
     );
   });
+
+  it("uses February 28 for leap-day anniversaries in non-leap years", () => {
+    const leapDayElection = {
+      elected: "2024-02-29",
+      pontificateEnd: null,
+    };
+
+    expect(getNextElectionAnniversary(leapDayElection, "2025-01-01")).toBe(
+      "2025-02-28",
+    );
+    expect(getNextElectionAnniversary(leapDayElection, "2028-01-01")).toBe(
+      "2028-02-29",
+    );
+  });
+
+  it("rejects an anniversary beyond the four-digit ISO year range", () => {
+    expect(() =>
+      getNextElectionAnniversary(
+        { elected: "9999-01-01", pontificateEnd: null },
+        "9999-01-01",
+      ),
+    ).toThrow(RangeError);
+  });
 });
 
 describe("daysSinceElection", () => {
@@ -228,6 +288,15 @@ describe("daysSinceElection", () => {
     expect(() => daysSinceElection(getCurrentPope(), "2025-05-07")).toThrow(
       RangeError,
     );
+  });
+
+  it("counts across the JavaScript Date year-remapping boundary", () => {
+    expect(
+      daysSinceElection(
+        { elected: "0099-12-31", pontificateEnd: null },
+        "0100-01-01",
+      ),
+    ).toBe(1);
   });
 });
 

@@ -59,11 +59,29 @@ describe("CLI commands", () => {
     expect(result.output).toContain("Karol Józef Wojtyła");
   });
 
+  it("finds the pope serving on a date", () => {
+    const result = runCli(["date", "2015-01-01"], { now: NOW });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.output).toContain("Serving on 2015-01-01:");
+    expect(result.output).toContain("Pope Francis");
+  });
+
   it("shows the next election anniversary", () => {
     const result = runCli(["anniversary"], { now: NOW });
 
     expect(result.output).toBe(
       "Pope Leo XIV\nNext election anniversary: 2027-05-08",
+    );
+  });
+
+  it("shows completed-pontificate statistics", () => {
+    const result = runCli(["stats"], { now: NOW });
+
+    expect(result.output).toContain("Longest: Pope John Paul II");
+    expect(result.output).toContain("Shortest: Pope John Paul I");
+    expect(result.output).toContain(
+      "Average: 4503 days across 5 completed pontificates",
     );
   });
 
@@ -101,12 +119,19 @@ describe("CLI JSON output", () => {
     const anniversary = JSON.parse(
       runCli(["anniversary", "--json"], { now: NOW }).output,
     );
+    const byDate = JSON.parse(
+      runCli(["date", "2015-01-01", "--json"], { now: NOW }).output,
+    );
+    const stats = JSON.parse(runCli(["stats", "--json"], { now: NOW }).output);
 
     expect(current.id).toBe("leo-xiv");
     expect(previous.id).toBe("francis");
     expect(history).toHaveLength(6);
     expect(pope.birthName).toBe("Jorge Mario Bergoglio");
     expect(anniversary.nextElectionAnniversary).toBe("2027-05-08");
+    expect(byDate.pope.id).toBe("francis");
+    expect(stats.longest.pope.id).toBe("john-paul-ii");
+    expect(stats.average.sampleSize).toBe(5);
   });
 });
 
@@ -133,6 +158,34 @@ describe("CLI errors", () => {
     );
     expect(runCli(["--unknown"], { now: NOW }).error).toContain(
       "Unknown option: --unknown",
+    );
+  });
+
+  it("rejects unexpected command arguments", () => {
+    for (const command of [
+      "current",
+      "previous",
+      "history",
+      "anniversary",
+      "stats",
+      "help",
+    ]) {
+      const result = runCli([command, "unexpected"], { now: NOW });
+
+      expect(result.exitCode).toBe(1);
+      expect(result.error).toContain("does not accept arguments");
+    }
+  });
+
+  it("reports missing, invalid, and unmatched dates", () => {
+    expect(runCli(["date"], { now: NOW }).error).toContain(
+      "requires one YYYY-MM-DD date",
+    );
+    expect(runCli(["date", "2025-02-30"], { now: NOW }).error).toContain(
+      "Expected a valid Date or ISO date string",
+    );
+    expect(runCli(["date", "2025-04-22"], { now: NOW }).error).toContain(
+      "No pope found serving on 2025-04-22",
     );
   });
 });

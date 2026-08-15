@@ -1,6 +1,7 @@
 import { currentPope } from "./data/popes.js";
 import {
   calendarDifference,
+  daysInMonth,
   daysBetween,
   formatDateParts,
   getDateParts,
@@ -130,6 +131,10 @@ export function getPopeAge(
   const birthDate = toIsoDate(pope.birthDate);
   const referenceDate = toIsoDate(date);
 
+  if (birthDate > pope.elected) {
+    throw new RangeError("The pope's birth date is after the election date.");
+  }
+
   if (referenceDate < birthDate) {
     throw new RangeError("The reference date is before the pope's birth.");
   }
@@ -139,6 +144,7 @@ export function getPopeAge(
 
 /**
  * Returns the first election anniversary strictly after the reference date.
+ * Leap-day elections use February 28 in non-leap years.
  *
  * @param pope - Pope election boundaries; defaults to the current pope.
  * @param date - Reference date; defaults to today.
@@ -153,19 +159,23 @@ export function getNextElectionAnniversary(
   const election = getDateParts(pope.elected);
   const reference = getDateParts(referenceDate);
   let year = Math.max(election.year, reference.year);
-  let anniversary = formatDateParts({
-    year,
-    month: election.month,
-    day: election.day,
-  });
+  const anniversaryInYear = (anniversaryYear: number): string =>
+    formatDateParts({
+      year: anniversaryYear,
+      month: election.month,
+      day: Math.min(election.day, daysInMonth(anniversaryYear, election.month)),
+    });
+  let anniversary = anniversaryInYear(year);
 
   if (anniversary <= referenceDate) {
+    if (year === 9999) {
+      throw new RangeError(
+        "The next election anniversary is outside the supported date range.",
+      );
+    }
+
     year += 1;
-    anniversary = formatDateParts({
-      year,
-      month: election.month,
-      day: election.day,
-    });
+    anniversary = anniversaryInYear(year);
   }
 
   return anniversary;

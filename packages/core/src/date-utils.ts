@@ -14,7 +14,13 @@ export function toIsoDate(value: DateInput): string {
       throw new TypeError("Expected a valid Date or ISO date string.");
     }
 
-    const year = String(value.getFullYear()).padStart(4, "0");
+    const calendarYear = value.getFullYear();
+
+    if (calendarYear < 0 || calendarYear > 9999) {
+      throw new TypeError("Expected a date with a four-digit calendar year.");
+    }
+
+    const year = String(calendarYear).padStart(4, "0");
     const month = String(value.getMonth() + 1).padStart(2, "0");
     const day = String(value.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
@@ -43,21 +49,25 @@ export function formatDateParts({ year, month, day }: DateParts): string {
     .join("-");
 }
 
+function utcTimestamp({ year, month, day }: DateParts): number {
+  const date = new Date(0);
+  date.setUTCFullYear(year, month - 1, day);
+  return date.getTime();
+}
+
 export function daysBetween(start: string, end: string): number {
   const startParts = getDateParts(start);
   const endParts = getDateParts(end);
-  const startTime = Date.UTC(
-    startParts.year,
-    startParts.month - 1,
-    startParts.day,
-  );
-  const endTime = Date.UTC(endParts.year, endParts.month - 1, endParts.day);
+  const startTime = utcTimestamp(startParts);
+  const endTime = utcTimestamp(endParts);
 
   return Math.round((endTime - startTime) / MILLISECONDS_PER_DAY);
 }
 
-function daysInMonth(year: number, month: number): number {
-  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+export function daysInMonth(year: number, month: number): number {
+  return new Date(
+    utcTimestamp({ year, month: month + 1, day: 0 }),
+  ).getUTCDate();
 }
 
 function addYears(date: DateParts, years: number): DateParts {

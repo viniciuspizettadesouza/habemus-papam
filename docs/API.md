@@ -19,24 +19,27 @@ Internal files are not exported.
 
 ## Date conventions
 
-`DateInput` accepts a valid `Date` or an ISO date in `YYYY-MM-DD` format. For a
-`Date`, the local calendar date is used and the time is ignored. Date-only
-arithmetic runs in UTC to avoid daylight-saving changes.
+`DateInput` accepts a valid `Date` with a four-digit local calendar year or an
+ISO date in `YYYY-MM-DD` format. For a `Date`, the local calendar date is used
+and the time is ignored. Date-only arithmetic runs in UTC to avoid
+daylight-saving changes.
 
 `isElectionDay()` and `isElectionAnniversary()` accept only `Date` instances.
-Optional pope and date arguments default to the current pope and today.
+For calculation functions with optional pope and date arguments, those
+arguments default to the current pope and today. For an election on February
+29, anniversaries fall on February 28 in non-leap years.
 
 ## Functions
 
 ### Pope queries
 
-| Function              | Result                                                                                              |
-| --------------------- | --------------------------------------------------------------------------------------------------- |
-| `getCurrentPope()`    | Current pope                                                                                        |
-| `getPreviousPope()`   | Pope immediately before the current pope                                                            |
-| `listPopes()`         | Records in reverse chronological order                                                              |
-| `getPopeByName(name)` | Match by ID, papal name, or birth name; ignores case, punctuation, titles, and diacritics           |
-| `getPopeByDate(date)` | Pope serving on an inclusive pontificate date, or `null` during a vacant see or outside the dataset |
+| Function              | Result                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `getCurrentPope()`    | Current pope                                                                                                 |
+| `getPreviousPope()`   | Pope immediately before the current pope                                                                     |
+| `listPopes()`         | Records in reverse chronological order                                                                       |
+| `getPopeByName(name)` | Match by ID, papal name, or birth name; ignores case, punctuation, common papal/saint titles, and diacritics |
+| `getPopeByDate(date)` | Pope serving on an inclusive pontificate date, or `null` during a vacant see or outside the dataset          |
 
 Query functions return mutable copies and never expose the internal dataset.
 
@@ -75,8 +78,9 @@ Statistics exclude the current pontificate and return copies.
 ## Errors
 
 Invalid values throw `TypeError`. Impossible chronology, such as a reference
-date before an election or birth, throws `RangeError`. Name and date searches
-return `null` when valid input has no match.
+date before an election or birth, a birth after an election, or a result beyond
+the four-digit year range, throws `RangeError`. Name and date searches return
+`null` when valid input has no match.
 
 ## Types
 

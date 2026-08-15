@@ -6,8 +6,14 @@ describe("createPopupMarkup", () => {
   it("renders the current pope from the core package", () => {
     const markup = createPopupMarkup(new Date(2026, 4, 9));
 
-    expect(markup).toContain("Pope Leo XIV (Robert Francis Prevost)");
-    expect(markup).toContain("Elected on 2025-05-08.");
+    expect(markup).toContain("Pope Leo XIV");
+    expect(markup).toContain("Robert Francis Prevost");
+    expect(markup).toContain('datetime="2025-05-08"');
+    expect(markup).toContain("Age</dt><dd>70 years");
+    expect(markup).toContain("Pontificate</dt><dd>1 year");
+    expect(markup).toContain("Next anniversary</dt>");
+    expect(markup).toContain("Recent popes");
+    expect(markup).toContain("Pope Francis");
   });
 
   it("renders the election anniversary message on May 8", () => {
